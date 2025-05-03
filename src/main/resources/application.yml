@@ -5,6 +5,9 @@ spring:
     url: jdbc:postgresql://localhost:5432/cacodemon
     username: postgres
     password: 123456
+  jpa:
+    hibernate:
+      ddl-auto: update
   flyway:
     enabled: true
     baseline-version: 1.0
@@ -16,4 +19,3 @@ spring:
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
-    default-schema: ${spring.jpa.properties.hibernate.default_schema}
