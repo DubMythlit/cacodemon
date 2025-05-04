@@ -4,7 +4,7 @@ function App() {
   const [message, setMessage] = useState('Loading...');
 
   useEffect(() => {
-    fetch('http://localhost:8080/api/hello')
+    fetch('/api/hello')
       .then((res) => res.text())
       .then((data) => setMessage(data))
       .catch((err) => setMessage('API failed: ' + err));
