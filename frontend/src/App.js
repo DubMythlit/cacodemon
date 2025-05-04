@@ -1,20 +1,35 @@
 import React from 'react';
+import { Theme, Button, Heading, Flex, Container } from "@radix-ui/themes";
+
+import "@radix-ui/themes/styles.css";
 import './index.css'
 
 function App() {
   return (
-    <div className='flex flex-col h-screen'>
-      <div className='flex place-content-between p-2'>
-        <span>Project Cacodemon</span>
-        <a className='rounded p-1 border border-solid'>
-          註冊
-        </a>
-      </div>
+    <Theme>
+      <Flex
+        direction='column'
+        height='100vh'
+      >
+        <Flex
+          justify='between'
+          p='2'
+        >
+          <Heading>Project Cacodemon</Heading>
+          <Button>
+            註冊
+          </Button>
+        </Flex>
 
-      <div className='flex items-center justify-center grow'>
-        工事中
-      </div>
-    </div>
+        <Flex
+          align='center'
+          justify='center'
+          flexGrow='1'
+        >
+          工事中👷
+        </Flex>
+      </Flex>
+    </Theme>
   );
 }
 
