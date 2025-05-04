@@ -1,19 +1,19 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import './index.css'
 
 function App() {
-  const [message, setMessage] = useState('Loading...');
-
-  useEffect(() => {
-    fetch('/api/hello')
-      .then((res) => res.text())
-      .then((data) => setMessage(data))
-      .catch((err) => setMessage('API failed: ' + err));
-  }, []);
-
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>🧠 Spring Boot + React Demo</h1>
-      <p>後端回傳訊息：{message}</p>
+    <div className='flex flex-col h-screen'>
+      <div className='flex place-content-between p-2'>
+        <span>Project Cacodemon</span>
+        <a className='rounded p-1 border border-solid'>
+          註冊
+        </a>
+      </div>
+
+      <div className='flex items-center justify-center grow'>
+        工事中
+      </div>
     </div>
   );
 }
