@@ -1,9 +1,43 @@
-import React from 'react'
-import { Button, Dialog, Flex, TextField } from '@radix-ui/themes'
+import React, { useState } from 'react'
+import {
+  Button,
+  Dialog,
+  Flex,
+  TextField,
+  Box,
+  Callout
+} from '@radix-ui/themes'
+import { axios } from '../api'
 
 export function SignupDialog() {
+  const [open, setOpen] = useState(false)
+  const [username, setUsername] = useState('')
+  const [password, setPassword] = useState('')
+  const [errorMsg, setErrorMsg] = useState('')
+
+  const submit = async () => {
+    if (username.length === 0 || password.length === 0) {
+      setErrorMsg('請輸入使用者名稱與密碼')
+    }
+
+    const response = await axios.post('/api/user/create', {
+      username,
+      password
+    })
+    if (response.status !== 200) {
+      setErrorMsg(response.data)
+      return
+    }
+
+    // TODO: 登入成功
+    setOpen(false)
+  }
+
   return (
-    <Dialog.Root>
+    <Dialog.Root
+      open={open}
+      onOpenChange={setOpen}
+    >
       <Dialog.Trigger asChild>
         <Button>
           註冊
@@ -19,11 +53,28 @@ export function SignupDialog() {
         </Dialog.Description>
         <Flex direction='column' gap='1'>
           <Flex align='center'>
-            帳號：<TextField.Root maxLength={20} />
+            帳號：
+            <TextField.Root
+              maxLength={20}
+              onChange={(e) => setUsername(e.target.value)}
+            />
           </Flex>
           <Flex align='center'>
-            密碼：<TextField.Root type='password' maxLength={20} />
+            密碼：
+            <TextField.Root
+              type='password'
+              maxLength={20}
+              onChange={(e) => setPassword(e.target.value)}
+            />
           </Flex>
+
+          {errorMsg.length > 0 && (
+            <Callout.Root color='red'>
+              <Callout.Text>
+                {errorMsg}
+              </Callout.Text>
+            </Callout.Root>
+          )}
 
           <Flex justify='end' gap='1'>
             <Dialog.Close asChild>
@@ -31,7 +82,10 @@ export function SignupDialog() {
                 取消
               </Button>
             </Dialog.Close>
-            <Button>
+            <Button
+              onClick={submit}
+              disabled={username.length === 0 || password.length === 0}
+            >
               送出
             </Button>
           </Flex>
