@@ -1,5 +1,6 @@
 import React from 'react';
-import { Theme, Button, Heading, Flex, Container } from "@radix-ui/themes";
+import { Theme, Heading, Flex } from "@radix-ui/themes";
+import { SignupDialog } from './component/SignupDialog';
 
 import "@radix-ui/themes/styles.css";
 import './index.css'
@@ -16,9 +17,7 @@ function App() {
           p='2'
         >
           <Heading>Project Cacodemon</Heading>
-          <Button>
-            註冊
-          </Button>
+          <SignupDialog />
         </Flex>
 
         <Flex
