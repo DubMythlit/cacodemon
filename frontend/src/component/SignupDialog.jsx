@@ -4,6 +4,7 @@ import {
   Dialog,
   Flex,
   TextField,
+  Text,
   Box,
   Callout
 } from '@radix-ui/themes'
@@ -52,15 +53,41 @@ export function SignupDialog() {
           請輸入你的使用者名稱與密碼
         </Dialog.Description>
         <Flex direction='column' gap='1'>
-          <Flex align='center'>
-            帳號：
+          <Flex direction='column' align='start'>
+            <Text
+              as='span'
+              size='2'
+              color='gray'
+            >
+              帳號
+            </Text>
             <TextField.Root
               maxLength={20}
               onChange={(e) => setUsername(e.target.value)}
             />
           </Flex>
-          <Flex align='center'>
-            密碼：
+          <Flex direction='column' align='start'>
+          <Text
+              as='span'
+              size='2'
+              color='gray'
+            >
+              密碼：
+            </Text>
+            <TextField.Root
+              type='password'
+              maxLength={20}
+              onChange={(e) => setPassword(e.target.value)}
+            />
+          </Flex>
+          <Flex direction='column' align='start'>
+          <Text
+              as='span'
+              size='2'
+              color='gray'
+            >
+              請再次確認密碼：
+            </Text>
             <TextField.Root
               type='password'
               maxLength={20}
