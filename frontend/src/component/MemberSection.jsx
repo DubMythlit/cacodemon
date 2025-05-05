@@ -1,14 +1,18 @@
 import React from 'react'
-import { Flex } from '@radix-ui/themes'
+import { Button, Flex } from '@radix-ui/themes'
 
 import { LoginDialog } from './LoginDialog'
 import { SignupDialog } from './SignupDialog'
 import { useAuth } from '../hook/useAuth'
 
 export function MemberSection() {
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated, logout } = useAuth()
   if (isAuthenticated) {
-    return null
+    return (
+      <Button onClick={logout}>
+        登出
+      </Button>
+    )
   }
 
   return (
