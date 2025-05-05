@@ -5,7 +5,7 @@ import { LoginDialog } from './LoginDialog'
 import { SignupDialog } from './SignupDialog'
 import { useAuth } from '../hook/useAuth'
 
-export function LoginSignupDialogs() {
+export function MemberSection() {
   const { isAuthenticated } = useAuth()
   if (isAuthenticated) {
     return null

@@ -1,6 +1,6 @@
 import React from 'react'
 import { Theme, Heading, Flex } from '@radix-ui/themes'
-import { LoginSignupDialogs } from './component/LoginSignupDialogs'
+import { MemberSection } from './component/MemberSection'
 import { AuthProvider } from './context/AuthContext'
 
 import '@radix-ui/themes/styles.css'
@@ -19,7 +19,7 @@ function App() {
             p='2'
           >
             <Heading>Project Cacodemon</Heading>
-            <LoginSignupDialogs />
+            <MemberSection />
           </Flex>
 
           <Flex
