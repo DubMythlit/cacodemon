@@ -13,9 +13,14 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
                 .authorizeHttpRequests(auth -> auth
-                        .anyRequest().permitAll()
+                    .requestMatchers("/", "/index.html", "/static/**", "/assets/**").permitAll()
+                    .requestMatchers("/api/auth/login").permitAll()
+                    .requestMatchers("/api/user/create").permitAll()
+                    .requestMatchers("/api/user/me").authenticated()
+                    .anyRequest().denyAll()
                 )
-                .csrf(AbstractHttpConfigurer::disable);
+                .csrf(AbstractHttpConfigurer::disable)
+                .formLogin(AbstractHttpConfigurer::disable);
 
         return http.build();
     }
