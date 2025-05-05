@@ -20,11 +20,15 @@ export function SignupDialog() {
   const submit = async () => {
     if (username.length === 0 || password.length === 0) {
       setErrorMsg('請輸入使用者名稱與密碼')
+      return
     }
     if (password !== password2) {
       setErrorMsg('兩次輸入的密碼須保持一致')
+      return
     }
 
+
+    setErrorMsg('')
     const response = await axios.post('/api/user/create', {
       username,
       password
