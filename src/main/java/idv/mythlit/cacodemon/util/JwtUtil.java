@@ -2,13 +2,24 @@ package idv.mythlit.cacodemon.util;
 
 import io.jsonwebtoken.*;
 import io.jsonwebtoken.security.Keys;
+import org.springframework.beans.factory.annotation.Value;
 
 import java.security.Key;
 import java.util.Date;
 
 public class JwtUtil {
+    @Value("${jwt.secret}")
+    private final String secret;
     private static final Key key = Keys.secretKeyFor(SignatureAlgorithm.HS256);
     private static final long EXPIRATION = 1000L * 60 * 60 * 24 * 30; // 1 month
+
+    public JwtUtil(String secret) {
+        this.secret = secret;
+    }
+
+    private Key getKey() {
+        return Keys.hmacShaKeyFor(secret.getBytes());
+    }
 
     public static String generateToken(String username) {
         return Jwts.builder()
