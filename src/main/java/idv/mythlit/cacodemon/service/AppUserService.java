@@ -3,11 +3,11 @@ package idv.mythlit.cacodemon.service;
 import idv.mythlit.cacodemon.model.AppUser;
 import idv.mythlit.cacodemon.repository.AppUserRepository;
 import idv.mythlit.cacodemon.util.SHA256EncoderUtil;
-import org.apache.tomcat.util.codec.binary.Base64;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -16,6 +16,12 @@ public class AppUserService {
 
     public AppUserService(AppUserRepository appUserRepository) {
         this.appUserRepository = appUserRepository;
+    }
+
+    public Optional<AppUser> getAppUserByName(String username) {
+        AppUser appUser = new AppUser();
+        appUser.setName(username);
+        return appUserRepository.findOne(Example.of(appUser));
     }
 
     public boolean checkUsernameTaken(String username) {
@@ -42,6 +48,14 @@ public class AppUserService {
         } catch (Exception e) {
             return false;
         }
+    }
+
+    public boolean validateAppUser(String username, String password) {
+        AppUser appUser = new AppUser();
+        appUser.setName(username);
+        String encodedPassword = SHA256EncoderUtil.SHA256Encode(password);
+        appUser.setPassword(encodedPassword);
+        return appUserRepository.exists(Example.of(appUser));
     }
 }
 

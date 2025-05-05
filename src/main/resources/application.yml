@@ -19,3 +19,5 @@ spring:
     url: ${spring.datasource.url}
     user: ${spring.datasource.username}
     password: ${spring.datasource.password}
+jwt:
+  secret: 1d65c04f-ab36-4fe3-b2a1-cce21a55acb3
