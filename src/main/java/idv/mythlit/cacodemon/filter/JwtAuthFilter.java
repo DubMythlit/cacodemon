@@ -1,5 +1,7 @@
 package idv.mythlit.cacodemon.filter;
 
+import idv.mythlit.cacodemon.model.AppUser;
+import idv.mythlit.cacodemon.service.AppUserService;
 import idv.mythlit.cacodemon.util.JwtUtil;
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;
@@ -13,13 +15,16 @@ import org.springframework.web.filter.OncePerRequestFilter;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Optional;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
     private final JwtUtil jwtUtil;
+    private final AppUserService appUserService;
 
-    public JwtAuthFilter(JwtUtil jwtUtil) {
+    public JwtAuthFilter(JwtUtil jwtUtil, AppUserService appUserService) {
         this.jwtUtil = jwtUtil;
+        this.appUserService = appUserService;
     }
     @Override
     protected void doFilterInternal(HttpServletRequest req,
@@ -35,11 +40,14 @@ public class JwtAuthFilter extends OncePerRequestFilter {
         String token = authHeader.substring(7);
         if (jwtUtil.validateToken(token)) {
             String username = jwtUtil.extractUsername(token);
-            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                    username, null, Collections.emptyList()
-            );
-            auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
-            SecurityContextHolder.getContext().setAuthentication(auth);
+            Optional<AppUser> userOptional = appUserService.getAppUserByName(username);
+            if (userOptional.isPresent()) {
+                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
+                        username, null, Collections.emptyList()
+                );
+                auth.setDetails(new WebAuthenticationDetailsSource().buildDetails(req));
+                SecurityContextHolder.getContext().setAuthentication(auth);
+            }
         }
 
         filterChain.doFilter(req, res);
