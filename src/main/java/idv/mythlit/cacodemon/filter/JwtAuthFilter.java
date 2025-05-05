@@ -16,7 +16,7 @@ import java.util.Collections;
 
 @Component
 public class JwtAuthFilter extends OncePerRequestFilter {
-    private JwtUtil jwtUtil;
+    private final JwtUtil jwtUtil;
 
     public JwtAuthFilter(JwtUtil jwtUtil) {
         this.jwtUtil = jwtUtil;
