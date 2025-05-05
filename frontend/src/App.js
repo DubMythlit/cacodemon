@@ -1,8 +1,8 @@
-import React from 'react';
-import { Theme, Heading, Flex } from "@radix-ui/themes";
-import { SignupDialog } from './component/SignupDialog';
+import React from 'react'
+import { Theme, Heading, Flex } from '@radix-ui/themes'
+import { SignupDialog } from './component/SignupDialog'
 
-import "@radix-ui/themes/styles.css";
+import '@radix-ui/themes/styles.css'
 import './index.css'
 
 function App() {
@@ -29,7 +29,7 @@ function App() {
         </Flex>
       </Flex>
     </Theme>
-  );
+  )
 }
 
-export default App;
+export default App
