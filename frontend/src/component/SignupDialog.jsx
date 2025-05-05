@@ -14,11 +14,15 @@ export function SignupDialog() {
   const [open, setOpen] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
+  const [password2, setPassword2] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
 
   const submit = async () => {
     if (username.length === 0 || password.length === 0) {
       setErrorMsg('請輸入使用者名稱與密碼')
+    }
+    if (password !== password2) {
+      setErrorMsg('兩次輸入的密碼須保持一致')
     }
 
     const response = await axios.post('/api/user/create', {
@@ -91,7 +95,7 @@ export function SignupDialog() {
             <TextField.Root
               type='password'
               maxLength={20}
-              onChange={(e) => setPassword(e.target.value)}
+              onChange={(e) => setPassword2(e.target.value)}
             />
           </Flex>
 
