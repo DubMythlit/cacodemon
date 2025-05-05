@@ -5,10 +5,10 @@ import {
   Flex,
   TextField,
   Text,
-  Box,
   Callout
 } from '@radix-ui/themes'
 import { axios } from '../api'
+import { useAuth } from '../hook/useAuth'
 
 export function SignupDialog() {
   const [open, setOpen] = useState(false)
@@ -16,6 +16,7 @@ export function SignupDialog() {
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
   const [errorMsg, setErrorMsg] = useState('')
+  const { login } = useAuth()
 
   const submit = async () => {
     if (username.length === 0 || password.length === 0) {
@@ -38,8 +39,8 @@ export function SignupDialog() {
       return
     }
 
-    // TODO: 登入成功
     setOpen(false)
+    login(response.data.token)
   }
 
   return (
