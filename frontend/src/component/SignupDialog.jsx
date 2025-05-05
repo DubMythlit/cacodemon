@@ -46,7 +46,7 @@ export function SignupDialog() {
 
       <Dialog.Content width='400px'>
         <Dialog.Title>
-          登入
+          註冊
         </Dialog.Title>
         <Dialog.Description mb='2'>
           請輸入你的使用者名稱與密碼
