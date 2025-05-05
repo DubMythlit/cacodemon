@@ -11,7 +11,6 @@ import { axios } from '../api'
 import { useAuth } from '../hook/useAuth'
 
 export function SignupDialog() {
-  const [open, setOpen] = useState(false)
   const [username, setUsername] = useState('')
   const [password, setPassword] = useState('')
   const [password2, setPassword2] = useState('')
@@ -39,15 +38,11 @@ export function SignupDialog() {
       return
     }
 
-    setOpen(false)
     login(response.data.token)
   }
 
   return (
-    <Dialog.Root
-      open={open}
-      onOpenChange={setOpen}
-    >
+    <Dialog.Root>
       <Dialog.Trigger>
         <Button>
           註冊
