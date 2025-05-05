@@ -17,7 +17,7 @@ public class AppUserController {
     }
 
     @PostMapping("/create")
-        public ResponseEntity<String> create(@RequestBody CreateAppUserBody body) {
+    public ResponseEntity<String> create(@RequestBody CreateAppUserBody body) {
         if (body.getUsername() == null || body.getPassword() == null) {
             return ResponseEntity.badRequest().body("使用者名稱/密碼不得為空");
         }
