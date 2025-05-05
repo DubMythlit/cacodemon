@@ -2,6 +2,7 @@ package idv.mythlit.cacodemon.controller.appUser;
 
 import idv.mythlit.cacodemon.model.AppUser;
 import idv.mythlit.cacodemon.service.AppUserService;
+import idv.mythlit.cacodemon.util.JwtUtil;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
@@ -18,13 +19,15 @@ import java.util.Optional;
 @RequestMapping("/api/user")
 public class AppUserController {
     private final AppUserService appUserService;
+    private final JwtUtil jwtUtil;
 
-    public AppUserController(AppUserService appUserService) {
+    public AppUserController(AppUserService appUserService, JwtUtil jwtUtil) {
         this.appUserService = appUserService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/create")
-    public ResponseEntity<String> create(@RequestBody CreateAppUserBody body) {
+    public ResponseEntity<?> create(@RequestBody CreateAppUserBody body) {
         if (body.getUsername() == null || body.getPassword() == null) {
             return ResponseEntity.badRequest().body("使用者名稱/密碼不得為空");
         }
@@ -36,7 +39,8 @@ public class AppUserController {
 
         boolean createSuccess = appUserService.createAppUser(body.getUsername(), body.getPassword());
         if (createSuccess) {
-            return ResponseEntity.ok().build();
+            String token = jwtUtil.generateToken(body.getUsername());
+            return ResponseEntity.ok(Map.of("token", token));
         } else {
             return ResponseEntity.internalServerError().build();
         }
