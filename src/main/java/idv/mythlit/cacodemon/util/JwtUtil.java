@@ -18,10 +18,21 @@ public class JwtUtil {
                 .compact();
     }
 
-    public static String validateToken(String token) {
-        return Jwts.parserBuilder().setSigningKey(key).build()
+    public static String extractUsername(String token) {
+        return Jwts.parserBuilder()
+                .setSigningKey(key)
+                .build()
                 .parseClaimsJws(token)
                 .getBody()
                 .getSubject();
+    }
+
+    public static boolean validateToken(String token) {
+        try {
+            extractUsername(token);
+            return true;
+        } catch (JwtException e) {
+            return false;
+        }
     }
 }
