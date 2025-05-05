@@ -48,7 +48,7 @@ export function SignupDialog() {
       open={open}
       onOpenChange={setOpen}
     >
-      <Dialog.Trigger asChild>
+      <Dialog.Trigger>
         <Button>
           註冊
         </Button>
