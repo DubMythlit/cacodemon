@@ -15,9 +15,11 @@ import java.util.Map;
 @RequestMapping("/api/auth")
 public class AuthController {
     private final AppUserService appUserService;
+    private final JwtUtil jwtUtil;
 
-    public AuthController(AppUserService appUserService) {
+    public AuthController(AppUserService appUserService, JwtUtil jwtUtil) {
         this.appUserService = appUserService;
+        this.jwtUtil = jwtUtil;
     }
 
     @PostMapping("/login")
@@ -26,7 +28,7 @@ public class AuthController {
         String password = body.get("password");
         boolean validated = appUserService.validateAppUser(username, password);
         if (validated) {
-            String token = JwtUtil.generateToken(username);
+            String token = jwtUtil.generateToken(username);
             return ResponseEntity.ok(Map.of("token", token));
         } else {
             return ResponseEntity.status(HttpStatus.FORBIDDEN).build();
