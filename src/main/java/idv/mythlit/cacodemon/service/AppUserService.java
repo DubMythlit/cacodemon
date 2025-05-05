@@ -43,6 +43,14 @@ public class AppUserService {
             return false;
         }
     }
+
+    public boolean validateAppUser(String username, String password) {
+        AppUser appUser = new AppUser();
+        appUser.setName(username);
+        String encodedPassword = SHA256EncoderUtil.SHA256Encode(password);
+        appUser.setPassword(encodedPassword);
+        return appUserRepository.exists(Example.of(appUser));
+    }
 }
 
 
