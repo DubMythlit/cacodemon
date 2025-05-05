@@ -1,20 +1,34 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
+import { Theme, Heading, Flex } from "@radix-ui/themes";
+import { SignupDialog } from './component/SignupDialog';
+
+import "@radix-ui/themes/styles.css";
+import './index.css'
 
 function App() {
-  const [message, setMessage] = useState('Loading...');
-
-  useEffect(() => {
-    fetch('/api/hello')
-      .then((res) => res.text())
-      .then((data) => setMessage(data))
-      .catch((err) => setMessage('API failed: ' + err));
-  }, []);
-
   return (
-    <div style={{ padding: '2rem', fontFamily: 'sans-serif' }}>
-      <h1>🧠 Spring Boot + React Demo</h1>
-      <p>後端回傳訊息：{message}</p>
-    </div>
+    <Theme>
+      <Flex
+        direction='column'
+        height='100vh'
+      >
+        <Flex
+          justify='between'
+          p='2'
+        >
+          <Heading>Project Cacodemon</Heading>
+          <SignupDialog />
+        </Flex>
+
+        <Flex
+          align='center'
+          justify='center'
+          flexGrow='1'
+        >
+          工事中👷
+        </Flex>
+      </Flex>
+    </Theme>
   );
 }
 
