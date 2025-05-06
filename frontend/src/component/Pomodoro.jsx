@@ -83,6 +83,11 @@ export function Pomodoro() {
         >
           {startButtonText}
         </Button>
+        {pomodoroState === 'start' && (
+          <Button>
+            停止
+          </Button>
+        )}
       </Flex>
     </Flex>
   )
