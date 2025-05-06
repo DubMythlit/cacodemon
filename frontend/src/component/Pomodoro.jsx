@@ -4,18 +4,20 @@ import { Button, Flex, Text } from '@radix-ui/themes'
 import { StopButtonWithDialog } from './StopButtonWithDialog'
 
 export function Pomodoro() {
-  const [pomodoroState, setPomodoroState] = useState('pause')
+  const [pomodoroState, setPomodoroState] = useState('stop')
   const [endTime, setEndTime] = useState(null)
 
   let startButtonText
-  if (pomodoroState === 'pause') {
-    startButtonText = '開始'
+  if (pomodoroState === 'stop') {
+    startButtonText = '開始專注'
+  } else if (pomodoroState === 'pause' ) {
+    startButtonText = '繼續'
   } else {
     startButtonText = '暫停'
   }
 
   const onClick = () => {
-    if (pomodoroState === 'pause') {
+    if (pomodoroState === 'stop' || pomodoroState === 'pause') {
       onStart()
     } else {
       onPause()
@@ -43,6 +45,9 @@ export function Pomodoro() {
   const [intervalId, setIntervalId] = useState(null)
   const [timeleftOnPause, setTimeleftOnPuase] = useState(null)
   useEffect(() => {
+    if (pomodoroState === 'stop') {
+      return
+    }
     if (pomodoroState === 'pause') {
       clearInterval(intervalId)
       if (!endTime) {
