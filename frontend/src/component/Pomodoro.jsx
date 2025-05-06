@@ -29,6 +29,14 @@ export function Pomodoro() {
   const onPause = () => {
     setPomodoroState('pause')
   }
+  const onStop = () => {
+    setPomodoroState('pause')
+    setEndTime(null)
+    setMinutes(25)
+    setSeconds(0)
+    setIntervalId(null)
+    setTimeleftOnPuase(null)
+  }
 
   const [minutes, setMinutes] = useState(25)
   const [seconds, setSeconds] = useState(0)
@@ -85,7 +93,9 @@ export function Pomodoro() {
           {startButtonText}
         </Button>
         {pomodoroState === 'start' && (
-          <StopButtonWithDialog />
+          <StopButtonWithDialog
+            onStopClick={onStop}
+          />
         )}
       </Flex>
     </Flex>

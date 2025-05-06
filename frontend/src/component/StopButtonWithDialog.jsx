@@ -1,7 +1,7 @@
 import React from 'react'
 import { Dialog, Button, Flex } from '@radix-ui/themes'
 
-export function StopButtonWithDialog() {
+export function StopButtonWithDialog({ onStopClick }) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -23,7 +23,9 @@ export function StopButtonWithDialog() {
             </Button>
           </Dialog.Close>
           <Dialog.Close>
-            <Button>
+            <Button
+              onClick={onStopClick}
+            >
               確定
             </Button>
           </Dialog.Close>
