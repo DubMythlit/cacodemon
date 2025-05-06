@@ -15,8 +15,9 @@ public class TaskService {
         this.taskRepository = taskRepository;
     }
 
-    public Optional<Task> createTask(String taskName, Integer pomodoroGoal) {
+    public Optional<Task> createTask(String userId, String taskName, Integer pomodoroGoal) {
         Task task = new Task();
+        task.setUserId(userId);
         task.setTaskName(taskName);
         task.setPomodoroGoal(pomodoroGoal);
         task.setPomodoroSpent(0);
