@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import dayjs from 'dayjs'
 import { Button, Flex, Text } from '@radix-ui/themes'
+import { StopButtonWithDialog } from './StopButtonWithDialog'
 
 export function Pomodoro() {
   const [pomodoroState, setPomodoroState] = useState('pause')
@@ -84,9 +85,7 @@ export function Pomodoro() {
           {startButtonText}
         </Button>
         {pomodoroState === 'start' && (
-          <Button>
-            停止
-          </Button>
+          <StopButtonWithDialog />
         )}
       </Flex>
     </Flex>
