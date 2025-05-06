@@ -2,6 +2,7 @@ import React from 'react'
 import { Theme, Heading, Flex } from '@radix-ui/themes'
 import { MemberSection } from './component/MemberSection'
 import { AuthProvider } from './context/AuthContext'
+import { Pomodoro } from './component/Pomodoro'
 
 import '@radix-ui/themes/styles.css'
 import './index.css'
@@ -27,7 +28,7 @@ function App() {
             justify='center'
             flexGrow='1'
           >
-            工事中👷
+            <Pomodoro />
           </Flex>
         </Flex>
       </Theme>
