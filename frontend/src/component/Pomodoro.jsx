@@ -4,38 +4,38 @@ import { StopButtonWithDialog } from './StopButtonWithDialog'
 import { Timer } from './Timer'
 
 export function Pomodoro() {
-  const [pomodoroState, setPomodoroState] = useState('stop')
+  const [timerState, setTimerState] = useState('stop')
 
   let startButtonText
-  if (pomodoroState === 'stop') {
+  if (timerState === 'stop') {
     startButtonText = '開始專注'
-  } else if (pomodoroState === 'pause' ) {
+  } else if (timerState === 'pause' ) {
     startButtonText = '繼續'
   } else {
     startButtonText = '暫停'
   }
 
   const onClick = () => {
-    if (pomodoroState === 'stop' || pomodoroState === 'pause') {
+    if (timerState === 'stop' || timerState === 'pause') {
       onStart()
     } else {
       onPause()
     }
   }
   const onStart = () => {
-    setPomodoroState('start')
+    setTimerState('start')
   }
   const onPause = () => {
-    setPomodoroState('pause')
+    setTimerState('pause')
   }
   const onStop = () => {
-    setPomodoroState('stop')
+    setTimerState('stop')
   }
 
   return (
     <Flex direction='column'>
       <Timer
-        timerState={pomodoroState}
+        timerState={timerState}
         countdownMinutes={25} // TODO: 工作(25), 休息(5)
       />
       <Flex gap='1'>
@@ -44,7 +44,7 @@ export function Pomodoro() {
         >
           {startButtonText}
         </Button>
-        {pomodoroState === 'start' && (
+        {timerState === 'start' && (
           <StopButtonWithDialog
             onStopClick={onStop}
           />
