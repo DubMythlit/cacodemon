@@ -13,25 +13,51 @@ export function Pomodoro() {
     startButtonText = '暫停'
   }
 
+  const onClick = () => {
+    if (pomodoroState === 'pause') {
+      onStart()
+    } else {
+      onPause()
+    }
+  }
   const onStart = () => {
     setPomodoroState('start')
     const endTime = dayjs().add(25, 'minutes')
     setEndTime(endTime)
   }
+  const onPause = () => {
+    setPomodoroState('pause')
+  }
 
   const [minutes, setMinutes] = useState("25")
   const [seconds, setSeconds] = useState("00")
+  const [intervalId, setIntervalId] = useState(null)
+  const [timeleftOnPause, setTimeleftOnPuase] = useState(null)
   useEffect(() => {
-    if (pomodoroState !== 'start') {
+    if (pomodoroState === 'pause') {
+      clearInterval(intervalId)
+      if (!endTime) {
+        return
+      }
+      setTimeleftOnPuase(endTime.diff(new Date(), 's'))
       return
     }
 
     const interval = setInterval(() => {
+      if (timeleftOnPause) {
+        setEndTime(dayjs().add(timeleftOnPause, 's'))
+        setTimeleftOnPuase(null)
+        return
+      }
       const timeleft = endTime.diff(new Date(), 's')
       setMinutes(Math.floor(timeleft / 60))
       setSeconds(timeleft % 60)
     }, 200)
-    return () => clearInterval(interval)
+    setIntervalId(interval)
+    return () => {
+      clearInterval(interval)
+      setIntervalId(null)
+    }
   }, [pomodoroState, endTime])
 
   return (
@@ -44,7 +70,7 @@ export function Pomodoro() {
       </Text>
       <Flex gap='1'>
         <Button
-          onClick={onStart}
+          onClick={onClick}
         >
           {startButtonText}
         </Button>
