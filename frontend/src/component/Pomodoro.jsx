@@ -50,8 +50,14 @@ export function Pomodoro() {
         return
       }
       const timeleft = endTime.diff(new Date(), 's')
-      setMinutes(Math.floor(timeleft / 60))
-      setSeconds(timeleft % 60)
+      if (timeleft >= 0) {
+        setMinutes(Math.floor(timeleft / 60))
+        setSeconds(timeleft % 60)
+        return
+      }
+
+      clearInterval(interval)
+      // TODO: 播放鬧鈴音效
     }, 200)
     setIntervalId(interval)
     return () => {
