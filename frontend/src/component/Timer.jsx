@@ -1,9 +1,8 @@
 import React, { useEffect, useRef, useState } from 'react'
 import { Text } from '@radix-ui/themes'
 import dayjs from 'dayjs'
-import { flashTitle } from '../util/util'
 
-export function Timer({ timerState, countdownMinutes }) {
+export function Timer({ timerState, countdownMinutes, onTimeUp }) {
   const [minutes, setMinutes] = useState(countdownMinutes)
   const [seconds, setSeconds] = useState(0)
   const [intervalId, setIntervalId] = useState(null)
@@ -21,11 +20,6 @@ export function Timer({ timerState, countdownMinutes }) {
       setEndTime(null)
     }
   }, [timerState, countdownMinutes])
-
-  const alarmRef = useRef(null)
-  useEffect(() => {
-    alarmRef.current = new Audio('/sound/alarm.mp3')
-  },[])
 
   useEffect(() => {
     if (timerState === 'stop') {
@@ -55,8 +49,7 @@ export function Timer({ timerState, countdownMinutes }) {
       }
 
       clearInterval(interval)
-      alarmRef.current?.play()
-      flashTitle('⏰該休息一下囉')
+      onTimeUp()
     }, 200)
     setIntervalId(interval)
     return () => {
