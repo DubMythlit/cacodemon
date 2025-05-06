@@ -1,12 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react'
-import dayjs from 'dayjs'
-import { Button, Flex, Text } from '@radix-ui/themes'
+import React, { useState } from 'react'
+import { Button, Flex } from '@radix-ui/themes'
 import { StopButtonWithDialog } from './StopButtonWithDialog'
-import { flashTitle } from '../util/util'
+import { Timer } from './Timer'
 
 export function Pomodoro() {
   const [pomodoroState, setPomodoroState] = useState('stop')
-  const [endTime, setEndTime] = useState(null)
 
   let startButtonText
   if (pomodoroState === 'stop') {
@@ -26,79 +24,20 @@ export function Pomodoro() {
   }
   const onStart = () => {
     setPomodoroState('start')
-    const endTime = dayjs().add(25, 'minutes')
-    setEndTime(endTime)
   }
   const onPause = () => {
     setPomodoroState('pause')
   }
   const onStop = () => {
-    setPomodoroState('pause')
-    setEndTime(null)
-    setMinutes(25)
-    setSeconds(0)
-    setIntervalId(null)
-    setTimeleftOnPuase(null)
+    setPomodoroState('stop')
   }
-
-  const [minutes, setMinutes] = useState(25)
-  const [seconds, setSeconds] = useState(0)
-  const [intervalId, setIntervalId] = useState(null)
-  const [timeleftOnPause, setTimeleftOnPuase] = useState(null)
-
-  const alarmRef = useRef(null)
-  useEffect(() => {
-    alarmRef.current = new Audio('/sound/alarm.mp3')
-  },[])
-
-  useEffect(() => {
-    if (pomodoroState === 'stop') {
-      return
-    }
-    if (pomodoroState === 'pause') {
-      clearInterval(intervalId)
-      if (!endTime) {
-        return
-      }
-      setTimeleftOnPuase(endTime.diff(new Date(), 's'))
-      return
-    }
-
-    const interval = setInterval(() => {
-      if (timeleftOnPause) {
-        setEndTime(dayjs().add(timeleftOnPause, 's'))
-        setTimeleftOnPuase(null)
-        return
-      }
-      const timeleft = endTime.diff(new Date(), 's')
-      if (timeleft >= 0) {
-        setMinutes(Math.floor(timeleft / 60))
-        setSeconds(timeleft % 60)
-        return
-      }
-
-      clearInterval(interval)
-      alarmRef.current?.play()
-      flashTitle('⏰該休息一下囉')
-    }, 200)
-    setIntervalId(interval)
-    return () => {
-      clearInterval(interval)
-      setIntervalId(null)
-    }
-  }, [pomodoroState, endTime])
-
-  const minutesText = `${minutes}`.padStart(2, '0')
-  const secondsText = `${seconds}`.padStart(2, '0')
 
   return (
     <Flex direction='column'>
-      <Text
-        size='9'
-        weight='bold'
-      >
-        {minutesText}:{secondsText}
-      </Text>
+      <Timer
+        timerState={pomodoroState}
+        countdownMinutes={25} // TODO: 工作(25), 休息(5)
+      />
       <Flex gap='1'>
         <Button
           onClick={onClick}
