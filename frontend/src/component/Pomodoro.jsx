@@ -6,6 +6,13 @@ export function Pomodoro() {
   const [pomodoroState, setPomodoroState] = useState('pause')
   const [endTime, setEndTime] = useState(null)
 
+  let startButtonText
+  if (pomodoroState === 'pause') {
+    startButtonText = '開始'
+  } else {
+    startButtonText = '暫停'
+  }
+
   const onStart = () => {
     setPomodoroState('start')
     const endTime = dayjs().add(25, 'minutes')
@@ -39,9 +46,8 @@ export function Pomodoro() {
         <Button
           onClick={onStart}
         >
-          Start
+          {startButtonText}
         </Button>
-        <Button>Pause</Button>
       </Flex>
     </Flex>
   )
