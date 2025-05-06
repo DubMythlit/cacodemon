@@ -29,8 +29,8 @@ export function Pomodoro() {
     setPomodoroState('pause')
   }
 
-  const [minutes, setMinutes] = useState("25")
-  const [seconds, setSeconds] = useState("00")
+  const [minutes, setMinutes] = useState(25)
+  const [seconds, setSeconds] = useState(0)
   const [intervalId, setIntervalId] = useState(null)
   const [timeleftOnPause, setTimeleftOnPuase] = useState(null)
   useEffect(() => {
@@ -60,13 +60,16 @@ export function Pomodoro() {
     }
   }, [pomodoroState, endTime])
 
+  const minutesText = `${minutes}`.padStart(2, '0')
+  const secondsText = `${seconds}`.padStart(2, '0')
+
   return (
     <Flex direction='column'>
       <Text
         size='9'
         weight='bold'
       >
-        {minutes}:{seconds}
+        {minutesText}:{secondsText}
       </Text>
       <Flex gap='1'>
         <Button
