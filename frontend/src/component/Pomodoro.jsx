@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import dayjs from 'dayjs'
 import { Button, Flex, Text } from '@radix-ui/themes'
 import { StopButtonWithDialog } from './StopButtonWithDialog'
+import { flashTitle } from '../util/util'
 
 export function Pomodoro() {
   const [pomodoroState, setPomodoroState] = useState('stop')
@@ -44,6 +45,12 @@ export function Pomodoro() {
   const [seconds, setSeconds] = useState(0)
   const [intervalId, setIntervalId] = useState(null)
   const [timeleftOnPause, setTimeleftOnPuase] = useState(null)
+
+  const alarmRef = useRef(null)
+  useEffect(() => {
+    alarmRef.current = new Audio('/sound/alarm.mp3')
+  },[])
+
   useEffect(() => {
     if (pomodoroState === 'stop') {
       return
@@ -71,7 +78,8 @@ export function Pomodoro() {
       }
 
       clearInterval(interval)
-      // TODO: 播放鬧鈴音效
+      alarmRef.current?.play()
+      flashTitle('⏰該休息一下囉')
     }, 200)
     setIntervalId(interval)
     return () => {
