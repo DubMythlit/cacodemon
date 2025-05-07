@@ -3,6 +3,7 @@ import { Theme, Heading, Flex } from '@radix-ui/themes'
 import { MemberSection } from './component/MemberSection'
 import { AuthProvider } from './context/AuthContext'
 import { Pomodoro } from './component/Pomodoro'
+import { TodoList } from './component/TodoList'
 
 import '@radix-ui/themes/styles.css'
 import './index.css'
@@ -23,12 +24,9 @@ function App() {
             <MemberSection />
           </Flex>
 
-          <Flex
-            align='center'
-            justify='center'
-            flexGrow='1'
-          >
+          <Flex flexGrow='1'>
             <Pomodoro />
+            <TodoList />
           </Flex>
         </Flex>
       </Theme>

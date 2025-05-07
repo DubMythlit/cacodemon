@@ -56,23 +56,25 @@ export function Pomodoro() {
   }
 
   return (
-    <Flex direction='column'>
-      <Timer
-        timerState={timerState}
-        countdownMinutes={mode === 'task' ? 25 : 5}
-        onTimeUp={onTimeUp}
-      />
-      <Flex gap='1'>
-        <Button
-          onClick={onClick}
-        >
-          {startButtonText}
-        </Button>
-        {timerState === 'start' && (
-          <StopButtonWithDialog
-            onStopClick={onStop}
-          />
-        )}
+    <Flex align='center' justify='center' flexGrow='1'>
+      <Flex direction='column'>
+        <Timer
+          timerState={timerState}
+          countdownMinutes={mode === 'task' ? 25 : 5}
+          onTimeUp={onTimeUp}
+        />
+        <Flex gap='1'>
+          <Button
+            onClick={onClick}
+          >
+            {startButtonText}
+          </Button>
+          {timerState === 'start' && (
+            <StopButtonWithDialog
+              onStopClick={onStop}
+            />
+          )}
+        </Flex>
       </Flex>
     </Flex>
   )
