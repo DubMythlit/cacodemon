@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { Button, Flex, Text, TextField } from '@radix-ui/themes'
 import { PomodoroGoalPicker } from './PomodoroGoalPicker'
+import { TaskList } from './TaskList'
 import { createTask } from '../../api/taskApi'
 import { useAuth } from '../../hook/useAuth'
 
@@ -61,7 +62,7 @@ function TodoListInner() {
         className='bg-gray-200 rounded-lg p-4'
         flexGrow='1'
       >
-        // TODO: 任務列表
+        <TaskList />
       </Flex>
     </Flex>
   )
