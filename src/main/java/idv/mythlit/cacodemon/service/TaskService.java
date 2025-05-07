@@ -5,6 +5,7 @@ import idv.mythlit.cacodemon.repository.TaskRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -30,6 +31,10 @@ public class TaskService {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    public List<Task> getTasksUnfinished(String userId) {
+        return taskRepository.findByUserIdAndCompletedAtIsNull(userId);
     }
 
     public boolean deleteTask(String id) {

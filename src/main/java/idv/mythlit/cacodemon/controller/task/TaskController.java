@@ -10,7 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Map;
+import java.util.List;
 import java.util.Optional;
 
 @Controller
@@ -53,6 +53,31 @@ public class TaskController {
         res.setPomodoroSpent(task.getPomodoroSpent());
         res.setCompletedAt(task.getCompletedAt());
         return ResponseEntity.ok(res);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllTasks(Authentication auth) {
+        String username = auth.getName();
+        Optional<AppUser> userOptional = appUserService.getAppUserByName(username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        String userId = userOptional.get().getId();
+        try {
+            List<CreateTaskResponse> tasks = taskService.getTasksUnfinished(userId).stream()
+                    .map(task -> {
+                        CreateTaskResponse resData = new CreateTaskResponse();
+                        resData.setId(task.getId());
+                        resData.setTaskName(task.getTaskName());
+                        resData.setPomodoroGoal(task.getPomodoroGoal());
+                        resData.setCompletedAt(task.getCompletedAt());
+                        return resData;
+                    }).toList();
+            return ResponseEntity.ok(tasks);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
     }
 
     @DeleteMapping("/{id}")
