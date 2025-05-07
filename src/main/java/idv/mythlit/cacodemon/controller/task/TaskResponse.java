@@ -5,7 +5,7 @@ import lombok.Data;
 import java.util.Date;
 
 @Data
-public class CreateTaskResponse {
+public class TaskResponse {
     private String id;
     private String taskName;
     private Integer pomodoroGoal;

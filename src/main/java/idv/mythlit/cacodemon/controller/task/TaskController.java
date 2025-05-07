@@ -46,12 +46,7 @@ public class TaskController {
         }
 
         Task task = result.get();
-        CreateTaskResponse res = new CreateTaskResponse();
-        res.setId(task.getId());
-        res.setTaskName(task.getTaskName());
-        res.setPomodoroGoal(task.getPomodoroGoal());
-        res.setPomodoroSpent(task.getPomodoroSpent());
-        res.setCompletedAt(task.getCompletedAt());
+        TaskResponse res = toTaskResponse(task);
         return ResponseEntity.ok(res);
     }
 
@@ -65,15 +60,8 @@ public class TaskController {
 
         String userId = userOptional.get().getId();
         try {
-            List<CreateTaskResponse> tasks = taskService.getTasksUnfinished(userId).stream()
-                    .map(task -> {
-                        CreateTaskResponse resData = new CreateTaskResponse();
-                        resData.setId(task.getId());
-                        resData.setTaskName(task.getTaskName());
-                        resData.setPomodoroGoal(task.getPomodoroGoal());
-                        resData.setCompletedAt(task.getCompletedAt());
-                        return resData;
-                    }).toList();
+            List<TaskResponse> tasks = taskService.getTasksUnfinished(userId).stream()
+                    .map(TaskController::toTaskResponse).toList();
             return ResponseEntity.ok(tasks);
         } catch (Exception e) {
             return ResponseEntity.internalServerError().build();
@@ -97,5 +85,15 @@ public class TaskController {
             return ResponseEntity.internalServerError().build();
         }
         return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
+    }
+
+    private static TaskResponse toTaskResponse(Task task) {
+        TaskResponse res = new TaskResponse();
+        res.setId(task.getId());
+        res.setTaskName(task.getTaskName());
+        res.setPomodoroGoal(task.getPomodoroGoal());
+        res.setPomodoroSpent(task.getPomodoroSpent());
+        res.setCompletedAt(task.getCompletedAt());
+        return res;
     }
 }
