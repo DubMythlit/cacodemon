@@ -10,15 +10,13 @@ export function TaskList({ mutateTimestamp }) {
   const [finishedTasks, setFinishedTasks] = useState([])
 
   const fetchData = () => {
-    return getAllTasks(token, logout)
-      .then((todoTasks) => {
-        setTodoTasks(todoTasks)
-        return getAllFinishedTasks(token, logout)
-      })
-      .then((finishedTasks) => {
-        setFinishedTasks(finishedTasks)
-      })
-      .catch(console.error)
+    return Promise.all([
+      getAllTasks(token, logout),
+      getAllFinishedTasks(token, logout)
+    ]).then(([todoTasks, finishedTasks]) => {
+      setTodoTasks(todoTasks)
+      setFinishedTasks(finishedTasks)
+    }).catch(console.error)
   }
 
   useEffect(() => {
