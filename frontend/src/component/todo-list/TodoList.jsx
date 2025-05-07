@@ -1,12 +1,15 @@
-import React from 'react'
+import React, { useState } from 'react'
 import { Button, Flex, Text, TextField } from '@radix-ui/themes'
+import { PomodoroGoalPicker } from './PomodoroGoalPicker'
 
 export function TodoList() {
+  const [pomodomoGoal, setPomorodoGoal] = useState(0)
   return (
     <div className='w-[330px] m-2'>
       <Flex 
         className='bg-gray-200 rounded-lg p-4'
         direction='column'
+        gap='1'
       >
         <Text>想新增什麼待辦事項嗎?</Text>
         <Flex justify='between' gap='2'>
@@ -18,20 +21,10 @@ export function TodoList() {
             新增
           </Button>
         </Flex>
-        <div>
-          <button>
-            🍅
-          </button>
-          <button>
-            🍅
-          </button>
-          <button>
-            🍅
-          </button>
-          <button>
-            🍅
-          </button>
-        </div>
+        <PomodoroGoalPicker
+          pomodomoGoal={pomodomoGoal}
+          setPomorodoGoal={setPomorodoGoal}
+        />
       </Flex>
       <Flex>
         // TODO: 任務列表
