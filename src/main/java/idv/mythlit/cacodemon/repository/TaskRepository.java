@@ -9,4 +9,5 @@ import java.util.List;
 @Repository
 public interface TaskRepository extends JpaRepository<Task, String> {
     List<Task> findByUserIdAndCompletedAtIsNull(String userId);
+    List<Task> findByUserIdAndCompletedAtIsNotNull(String userId);
 }

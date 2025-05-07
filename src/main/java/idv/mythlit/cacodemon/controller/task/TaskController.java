@@ -69,6 +69,24 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/finished")
+    public ResponseEntity<?> getFinishedTasks(Authentication auth) {
+        String username = auth.getName();
+        Optional<AppUser> userOptional = appUserService.getAppUserByName(username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        String userId = userOptional.get().getId();
+        try {
+            List<TaskResponse> tasks = taskService.getTasksFinished(userId).stream()
+                    .map(TaskController::toTaskResponse).toList();
+            return ResponseEntity.ok(tasks);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @PatchMapping("/{id}")
     public ResponseEntity<?> patchTask(@PathVariable String id, @RequestBody PatchTaskBody body, Authentication auth) {
         String username = auth.getName();

@@ -79,6 +79,10 @@ public class TaskService {
         return taskRepository.findByUserIdAndCompletedAtIsNull(userId);
     }
 
+    public List<Task> getTasksFinished(String userId) {
+        return taskRepository.findByUserIdAndCompletedAtIsNotNull(userId);
+    }
+
     public boolean deleteTask(String id) {
         taskRepository.deleteById(id);
         try {
