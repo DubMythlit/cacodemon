@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Text } from '@radix-ui/themes'
-import { CheckCircle, Trash } from '@phosphor-icons/react'
+import { Circle, CheckCircle, Trash } from '@phosphor-icons/react'
 import { completeTask, deleteTask } from '../../api/taskApi'
 import { useAuth } from '../../hook/useAuth'
 
@@ -8,6 +8,7 @@ export function TaskCard({
   id,
   taskName,
   pomodoroGoal,
+  completedAt,
   onMutate
 }) {
   const { token, logout } = useAuth()
@@ -28,12 +29,10 @@ export function TaskCard({
       justify='between'
     >
       <Flex align='center'>
-        <button
-          className='text-green-400 hover:text-green-600'
+        <CompleteButton
           onClick={onCompleteButtonClick}
-        >
-          <CheckCircle size={32} />
-        </button>
+          completed={completedAt !== null}
+        />
         <div>
           <Text>
             {taskName}
@@ -48,6 +47,28 @@ export function TaskCard({
         <Trash size={20} />
       </button>
     </Flex>
+  )
+}
+
+function CompleteButton({ onClick, completed }) {
+  if (completed) {
+    return (
+      <button
+        className='text-green-400 hover:text-green-600'
+        onClick={onClick}
+      >
+        <CheckCircle size={32} />
+      </button>
+    )
+  }
+  
+  return (
+    <button
+      className='text-slate-200 hover:text-slate-400'
+      onClick={onClick}
+    >
+      <Circle size={32} />
+    </button>
   )
 }
 

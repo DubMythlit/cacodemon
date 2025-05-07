@@ -41,6 +41,7 @@ export function TaskList({ mutateTimestamp }) {
                 id={task.id}
                 taskName={task.taskName}
                 pomodoroGoal={task.pomodoroGoal}
+                completedAt={task.completedAt}
                 onMutate={() => fetchData()}
               />
             </li>
@@ -56,6 +57,7 @@ export function TaskList({ mutateTimestamp }) {
                 id={task.id}
                 taskName={task.taskName}
                 pomodoroGoal={task.pomodoroGoal}
+                completedAt={task.completedAt}
                 onMutate={() => fetchData()}
               />
             </li>
