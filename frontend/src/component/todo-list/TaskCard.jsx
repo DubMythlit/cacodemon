@@ -1,19 +1,25 @@
 import React from 'react'
 import { Flex, Text } from '@radix-ui/themes'
 import { CheckCircle, Trash } from '@phosphor-icons/react'
-import { deleteTask } from '../../api/taskApi'
+import { completeTask, deleteTask } from '../../api/taskApi'
 import { useAuth } from '../../hook/useAuth'
 
 export function TaskCard({
   id,
   taskName,
   pomodoroGoal,
-  onDelete
+  onMutate
 }) {
   const { token, logout } = useAuth()
+  const onCompleteButtonClick = async () => {
+    // TODO: 實際的 pomodoroSpent 要在 Timer 跑完一次 25 分鐘才 +1
+    const pomodoroSpent = 0
+    await completeTask(id, pomodoroSpent, token, logout)
+    await onMutate()
+  }
   const onDeleteButtonClick = async () => {
     await deleteTask(id, token, logout)
-    await onDelete()
+    await onMutate()
   }
   return (
     <Flex
@@ -22,7 +28,10 @@ export function TaskCard({
       justify='between'
     >
       <Flex align='center'>
-        <button className='text-green-400 hover:text-green-600'>
+        <button
+          className='text-green-400 hover:text-green-600'
+          onClick={onCompleteButtonClick}
+        >
           <CheckCircle size={32} />
         </button>
         <div>

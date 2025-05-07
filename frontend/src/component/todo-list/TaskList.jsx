@@ -26,7 +26,7 @@ export function TaskList({ mutateTimestamp }) {
               id={task.id}
               taskName={task.taskName}
               pomodoroGoal={task.pomodoroGoal}
-              onDelete={() => fetchData()}
+              onMutate={() => fetchData()}
             />
           </li>
         )
