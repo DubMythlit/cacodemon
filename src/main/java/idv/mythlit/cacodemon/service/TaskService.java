@@ -2,6 +2,7 @@ package idv.mythlit.cacodemon.service;
 
 import idv.mythlit.cacodemon.model.Task;
 import idv.mythlit.cacodemon.repository.TaskRepository;
+import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,5 +30,23 @@ public class TaskService {
         } catch (Exception e) {
             return Optional.empty();
         }
+    }
+
+    public boolean deleteTask(String id) {
+        taskRepository.deleteById(id);
+        try {
+            taskRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean checkUserTaskExists(String id, String userId) {
+        Task task = new Task();
+        task.setId(id);
+        task.setUserId(userId);
+        Example<Task> example = Example.of(task);
+        return taskRepository.exists(example);
     }
 }

@@ -4,12 +4,11 @@ import idv.mythlit.cacodemon.model.AppUser;
 import idv.mythlit.cacodemon.model.Task;
 import idv.mythlit.cacodemon.service.AppUserService;
 import idv.mythlit.cacodemon.service.TaskService;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
@@ -46,5 +45,24 @@ public class TaskController {
         } else {
             return ResponseEntity.internalServerError().build();
         }
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@PathVariable String id, Authentication auth) {
+        String username = auth.getName();
+        Optional<AppUser> userOptional = appUserService.getAppUserByName(username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String userId = userOptional.get().getId();
+        if (!taskService.checkUserTaskExists(id, userId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        if (!taskService.deleteTask(id)) {
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).build();
     }
 }
