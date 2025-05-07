@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
 import java.util.Optional;
 
 @Controller
@@ -40,11 +41,18 @@ public class TaskController {
                 body.getTaskName(),
                 body.getPomodoroGoal()
         );
-        if (result.isPresent()) {
-            return ResponseEntity.ok(result.get());
-        } else {
+        if (result.isEmpty()) {
             return ResponseEntity.internalServerError().build();
         }
+
+        Task task = result.get();
+        CreateTaskResponse res = new CreateTaskResponse();
+        res.setId(task.getId());
+        res.setTaskName(task.getTaskName());
+        res.setPomodoroGoal(task.getPomodoroGoal());
+        res.setPomodoroSpent(task.getPomodoroSpent());
+        res.setCompletedAt(task.getCompletedAt());
+        return ResponseEntity.ok(res);
     }
 
     @DeleteMapping("/{id}")
