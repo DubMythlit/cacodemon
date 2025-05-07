@@ -60,7 +60,7 @@ public class TaskController {
         String username = auth.getName();
         Optional<AppUser> userOptional = appUserService.getAppUserByName(username);
         if (userOptional.isEmpty()) {
-            return ResponseEntity.badRequest().build();
+            return ResponseEntity.internalServerError().build();
         }
 
         String userId = userOptional.get().getId();
