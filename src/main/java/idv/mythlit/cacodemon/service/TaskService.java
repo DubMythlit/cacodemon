@@ -89,11 +89,11 @@ public class TaskService {
         }
     }
 
-    public boolean checkUserTaskExists(String id, String userId) {
+    public boolean checkUserTaskNotExists(String id, String userId) {
         Task task = new Task();
         task.setId(id);
         task.setUserId(userId);
         Example<Task> example = Example.of(task);
-        return taskRepository.exists(example);
+        return !taskRepository.exists(example);
     }
 }

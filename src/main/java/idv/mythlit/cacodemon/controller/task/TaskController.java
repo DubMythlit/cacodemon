@@ -84,7 +84,7 @@ public class TaskController {
         }
 
         String userId = userOptional.get().getId();
-        if (!taskService.checkUserTaskExists(id, userId)) {
+        if (taskService.checkUserTaskNotExists(id, userId)) {
             return ResponseEntity.notFound().build();
         }
 
@@ -111,7 +111,7 @@ public class TaskController {
         }
 
         String userId = userOptional.get().getId();
-        if (!taskService.checkUserTaskExists(id, userId)) {
+        if (taskService.checkUserTaskNotExists(id, userId)) {
             return ResponseEntity.notFound().build();
         }
 
