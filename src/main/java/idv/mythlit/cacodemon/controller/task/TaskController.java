@@ -10,6 +10,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -64,6 +65,39 @@ public class TaskController {
                     .map(TaskController::toTaskResponse).toList();
             return ResponseEntity.ok(tasks);
         } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
+    @PatchMapping("/{id}")
+    public ResponseEntity<?> patchTask(@PathVariable String id, @RequestBody PatchTaskBody body, Authentication auth) {
+        String username = auth.getName();
+        Optional<AppUser> userOptional = appUserService.getAppUserByName(username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        Date completedAt = body.getCompletedAt();
+        Integer pomodoroSpent = body.getPomodoroSpent();
+        if (completedAt != null && pomodoroSpent == null) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        String userId = userOptional.get().getId();
+        if (!taskService.checkUserTaskExists(id, userId)) {
+            return ResponseEntity.notFound().build();
+        }
+
+        boolean isPatchSuccess = false;
+        if (completedAt != null) {
+            isPatchSuccess = taskService.completeTask(userId, id, pomodoroSpent);
+        } else {
+            isPatchSuccess = taskService.reopenTask(userId, id);
+        }
+
+        if (isPatchSuccess) {
+            return ResponseEntity.ok().build();
+        } else {
             return ResponseEntity.internalServerError().build();
         }
     }

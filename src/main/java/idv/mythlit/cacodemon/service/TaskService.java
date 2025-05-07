@@ -5,6 +5,7 @@ import idv.mythlit.cacodemon.repository.TaskRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 import java.util.UUID;
@@ -30,6 +31,47 @@ public class TaskService {
             return Optional.of(task);
         } catch (Exception e) {
             return Optional.empty();
+        }
+    }
+
+    public boolean completeTask(String userId, String taskId, Integer pomodoroSpent) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+        if (taskOptional.isEmpty()) {
+            return false;
+        }
+
+        Task task = taskOptional.get();
+        if (!task.getUserId().equals(userId)) {
+            return false;
+        }
+
+        task.setPomodoroSpent(pomodoroSpent);
+        task.setCompletedAt(new Date());
+        try {
+            taskRepository.save(task);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean reopenTask(String userId, String taskId) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+        if (taskOptional.isEmpty()) {
+            return false;
+        }
+
+        Task task = taskOptional.get();
+        if (!task.getUserId().equals(userId)) {
+            return false;
+        }
+
+        task.setCompletedAt(null);
+        try {
+            taskRepository.save(task);
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
