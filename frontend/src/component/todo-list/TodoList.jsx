@@ -60,14 +60,9 @@ function TodoListInner() {
         />
       </Flex>
 
-      <Flex
-        className='bg-gray-200 rounded-lg p-4'
-        flexGrow='1'
-      >
-        <TaskList
-          mutateTimestamp={mutateTimestamp}
-        />
-      </Flex>
+      <TaskList
+        mutateTimestamp={mutateTimestamp}
+      />
     </Flex>
   )
 }

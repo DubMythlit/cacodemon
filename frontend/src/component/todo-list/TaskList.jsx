@@ -1,15 +1,23 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../hook/useAuth'
-import { getAllTasks } from '../../api/taskApi'
+import { getAllTasks, getAllFinishedTasks } from '../../api/taskApi'
 import { TaskCard } from './TaskCard'
+import { Flex, Text } from '@radix-ui/themes'
 
 export function TaskList({ mutateTimestamp }) {
   const { token, logout } = useAuth()
-  const [tasks, setTasks] = useState([])
+  const [todoTasks, setTodoTasks] = useState([])
+  const [finishedTasks, setFinishedTasks] = useState([])
 
   const fetchData = () => {
     return getAllTasks(token, logout)
-      .then(setTasks)
+      .then((todoTasks) => {
+        setTodoTasks(todoTasks)
+        return getAllFinishedTasks(token, logout)
+      })
+      .then((finishedTasks) => {
+        setFinishedTasks(finishedTasks)
+      })
       .catch(console.error)
   }
 
@@ -18,19 +26,42 @@ export function TaskList({ mutateTimestamp }) {
   }, [mutateTimestamp])
 
   return (
-    <ul className='flex gap-3 flex-col w-full'>
-      {tasks.map((task) => {
-        return (
-          <li key={task.id}>
-            <TaskCard
-              id={task.id}
-              taskName={task.taskName}
-              pomodoroGoal={task.pomodoroGoal}
-              onMutate={() => fetchData()}
-            />
-          </li>
-        )
-      })}
-    </ul>
+    <Flex
+      className='bg-gray-200 rounded-lg p-4'
+      flexGrow='1'
+      direction='column'
+      gap='2'
+    >
+      <Text size='2'>未完成</Text>
+      <ul className='flex gap-3 flex-col w-full'>
+        {todoTasks.map((task) => {
+          return (
+            <li key={task.id}>
+              <TaskCard
+                id={task.id}
+                taskName={task.taskName}
+                pomodoroGoal={task.pomodoroGoal}
+                onMutate={() => fetchData()}
+              />
+            </li>
+          )
+        })}
+      </ul>
+      <Text size='2'>已完成</Text>
+      <ul className='flex gap-3 flex-col w-full'>
+        {finishedTasks.map((task) => {
+          return (
+            <li key={task.id}>
+              <TaskCard
+                id={task.id}
+                taskName={task.taskName}
+                pomodoroGoal={task.pomodoroGoal}
+                onMutate={() => fetchData()}
+              />
+            </li>
+          )
+        })}
+      </ul>
+    </Flex>
   )
 }

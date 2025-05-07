@@ -35,6 +35,25 @@ export async function getAllTasks(token, logout) {
   return res.data
 }
 
+export async function getAllFinishedTasks(token, logout) {
+  const res = await axios.get('/api/task/finished', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+
+  if (res.status === 403) {
+    logout()
+    return []
+  }
+  if (res.status !== 200) {
+    console.error(res.statusText)
+    return []
+  }
+
+  return res.data
+}
+
 export async function completeTask(id, pomodoroSpent, token, logout) {
   const res = await axios.patch(`/api/task/${id}`, {
     completedAt: new Date(),
