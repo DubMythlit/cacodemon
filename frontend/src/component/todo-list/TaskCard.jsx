@@ -8,10 +8,12 @@ export function TaskCard({
   id,
   taskName,
   pomodoroGoal,
+  onDelete
 }) {
   const { token, logout } = useAuth()
-  const onDelete = () => {
-    deleteTask(id, token, logout).catch(console.error)
+  const onDeleteButtonClick = async () => {
+    await deleteTask(id, token, logout)
+    await onDelete()
   }
   return (
     <Flex
@@ -27,7 +29,7 @@ export function TaskCard({
       </div>
       <button
         className='p-1 border border-solid border-red-400 rounded text-red-500 hover:bg-red-200'
-        onClick={onDelete}
+        onClick={onDeleteButtonClick}
       >
         <Trash size={20} />
       </button>

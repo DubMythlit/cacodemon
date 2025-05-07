@@ -20,12 +20,12 @@ function TodoListInner() {
   const [taskName, setTaskName] = useState('')
   const [pomodomoGoal, setPomorodoGoal] = useState(0)
 
-  const [createTaskTimestamp, setCreateTaskTimestamp] = useState(0)
+  const [mutateTimestamp, setmutateTimestamp] = useState(0)
   const onCreateTask = async () => {
     await createTask(taskName, pomodomoGoal)
     setTaskName('')
     setPomorodoGoal(0)
-    setCreateTaskTimestamp(Date.now())
+    setmutateTimestamp(Date.now())
   }
 
   return (
@@ -65,7 +65,7 @@ function TodoListInner() {
         flexGrow='1'
       >
         <TaskList
-          createTaskTimestamp={createTaskTimestamp}
+          mutateTimestamp={mutateTimestamp}
         />
       </Flex>
     </Flex>

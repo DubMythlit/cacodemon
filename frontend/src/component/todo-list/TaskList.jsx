@@ -3,15 +3,19 @@ import { useAuth } from '../../hook/useAuth'
 import { getAllTasks } from '../../api/taskApi'
 import { TaskCard } from './TaskCard'
 
-export function TaskList({ createTaskTimestamp }) {
+export function TaskList({ mutateTimestamp }) {
   const { token, logout } = useAuth()
   const [tasks, setTasks] = useState([])
 
-  useEffect(() => {
-    getAllTasks(token, logout)
+  const fetchData = () => {
+    return getAllTasks(token, logout)
       .then(setTasks)
       .catch(console.error)
-  }, [createTaskTimestamp])
+  }
+
+  useEffect(() => {
+    fetchData()
+  }, [mutateTimestamp])
 
   return (
     <ul className='flex gap-3 flex-col w-full'>
@@ -22,6 +26,7 @@ export function TaskList({ createTaskTimestamp }) {
               id={task.id}
               taskName={task.taskName}
               pomodoroGoal={task.pomodoroGoal}
+              onDelete={() => fetchData()}
             />
           </li>
         )
