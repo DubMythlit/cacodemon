@@ -14,7 +14,11 @@ export function TodoList() {
   }
 
   return (
-    <div className='w-[330px] m-2'>
+    <Flex
+      className='w-[330px] m-2'
+      direction='column'
+      gap='1'
+    >
       <Flex 
         className='bg-gray-200 rounded-lg p-4'
         direction='column'
@@ -40,9 +44,13 @@ export function TodoList() {
           setPomorodoGoal={setPomorodoGoal}
         />
       </Flex>
-      <Flex>
+
+      <Flex
+        className='bg-gray-200 rounded-lg p-4'
+        flexGrow='1'
+      >
         // TODO: 任務列表
       </Flex>
-    </div>
+    </Flex>
   )
 }
