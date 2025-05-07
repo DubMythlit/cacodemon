@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Text } from '@radix-ui/themes'
-import { Trash } from '@phosphor-icons/react'
+import { CheckCircle, Trash } from '@phosphor-icons/react'
 import { deleteTask } from '../../api/taskApi'
 import { useAuth } from '../../hook/useAuth'
 
@@ -21,12 +21,17 @@ export function TaskCard({
       align='center'
       justify='between'
     >
-      <div>
-        <Text>
-          {taskName}
-        </Text>
-        <Pomodoros pomodoroGoal={pomodoroGoal} />
-      </div>
+      <Flex align='center'>
+        <button className='text-green-400 hover:text-green-600'>
+          <CheckCircle size={32} />
+        </button>
+        <div>
+          <Text>
+            {taskName}
+          </Text>
+          <Pomodoros pomodoroGoal={pomodoroGoal} />
+        </div>
+      </Flex>
       <button
         className='p-1 border border-solid border-red-400 rounded text-red-500 hover:bg-red-200'
         onClick={onDeleteButtonClick}
