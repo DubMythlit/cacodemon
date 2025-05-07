@@ -1,9 +1,18 @@
 import React, { useState } from 'react'
 import { Button, Flex, Text, TextField } from '@radix-ui/themes'
 import { PomodoroGoalPicker } from './PomodoroGoalPicker'
+import { createTask } from '../../api/taskApi'
 
 export function TodoList() {
+  const [taskName, setTaskName] = useState('')
   const [pomodomoGoal, setPomorodoGoal] = useState(0)
+
+  const onCreateTask = async () => {
+    await createTask(taskName, pomodomoGoal)
+    setTaskName('')
+    setPomorodoGoal(0)
+  }
+
   return (
     <div className='w-[330px] m-2'>
       <Flex 
@@ -16,8 +25,13 @@ export function TodoList() {
           <TextField.Root
             placeholder='任務名稱'
             className='flex-grow'
+            value={taskName}
+            onChange={(e) => setTaskName(e.target.value)}
           />
-          <Button variant='outline'>
+          <Button
+            variant='outline'
+            onClick={onCreateTask}
+          >
             新增
           </Button>
         </Flex>
