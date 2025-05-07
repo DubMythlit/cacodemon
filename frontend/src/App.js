@@ -3,7 +3,7 @@ import { Theme, Heading, Flex } from '@radix-ui/themes'
 import { MemberSection } from './component/MemberSection'
 import { AuthProvider } from './context/AuthContext'
 import { Pomodoro } from './component/Pomodoro'
-import { TodoList } from './component/TodoList'
+import { TodoList } from './component/todo-list/TodoList'
 
 import '@radix-ui/themes/styles.css'
 import './index.css'
