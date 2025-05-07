@@ -76,6 +76,27 @@ export async function completeTask(id, pomodoroSpent, token, logout) {
   return true
 }
 
+export async function reopenTask(id, token, logout) {
+  const res = await axios.patch(`/api/task/${id}`, {
+    completedAt: null
+  }, {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+
+  if (res.status === 403) {
+    logout()
+    return false
+  }
+  if (res.status !== 200) {
+    console.error(res.statusText)
+    return false
+  }
+
+  return true
+}
+
 export async function deleteTask(id, token, logout) {
   const res = await axios.delete(`/api/task/${id}`, {
     headers: {
