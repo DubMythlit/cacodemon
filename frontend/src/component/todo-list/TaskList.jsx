@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../hook/useAuth'
 import { getAllTasks } from '../../api/taskApi'
 
-export function TaskList() {
+export function TaskList({ createTaskTimestamp }) {
   const { token, logout } = useAuth()
   const [tasks, setTasks] = useState([])
 
@@ -10,7 +10,7 @@ export function TaskList() {
     getAllTasks(token, logout)
       .then(setTasks)
       .catch(console.error)
-  }, [])
+  }, [createTaskTimestamp])
 
   return (
     <ul>

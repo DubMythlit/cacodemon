@@ -20,10 +20,12 @@ function TodoListInner() {
   const [taskName, setTaskName] = useState('')
   const [pomodomoGoal, setPomorodoGoal] = useState(0)
 
+  const [createTaskTimestamp, setCreateTaskTimestamp] = useState(0)
   const onCreateTask = async () => {
     await createTask(taskName, pomodomoGoal)
     setTaskName('')
     setPomorodoGoal(0)
+    setCreateTaskTimestamp(Date.now())
   }
 
   return (
@@ -62,7 +64,9 @@ function TodoListInner() {
         className='bg-gray-200 rounded-lg p-4'
         flexGrow='1'
       >
-        <TaskList />
+        <TaskList
+          createTaskTimestamp={createTaskTimestamp}
+        />
       </Flex>
     </Flex>
   )
