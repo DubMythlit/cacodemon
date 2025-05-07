@@ -2,8 +2,20 @@ import React, { useState } from 'react'
 import { Button, Flex, Text, TextField } from '@radix-ui/themes'
 import { PomodoroGoalPicker } from './PomodoroGoalPicker'
 import { createTask } from '../../api/taskApi'
+import { useAuth } from '../../hook/useAuth'
 
 export function TodoList() {
+  const { isAuthenticated } = useAuth()
+  if (!isAuthenticated) {
+    return null
+  }
+
+  return (
+    <TodoListInner />
+  )
+}
+
+function TodoListInner() {
   const [taskName, setTaskName] = useState('')
   const [pomodomoGoal, setPomorodoGoal] = useState(0)
 
