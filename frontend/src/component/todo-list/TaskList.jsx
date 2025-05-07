@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../hook/useAuth'
 import { getAllTasks } from '../../api/taskApi'
+import { TaskCard } from './TaskCard'
 
 export function TaskList({ createTaskTimestamp }) {
   const { token, logout } = useAuth()
@@ -13,12 +14,15 @@ export function TaskList({ createTaskTimestamp }) {
   }, [createTaskTimestamp])
 
   return (
-    <ul>
+    <ul className='flex gap-3 flex-col w-full'>
       {tasks.map((task) => {
         return (
-          <li>
-            <p>{task.taskName}</p>
-            <p>{task.pomodoroGoal}</p>
+          <li key={task.id}>
+            <TaskCard
+              id={task.id}
+              taskName={task.taskName}
+              pomodoroGoal={task.pomodoroGoal}
+            />
           </li>
         )
       })}
