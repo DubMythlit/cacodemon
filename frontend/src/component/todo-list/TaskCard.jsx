@@ -3,15 +3,16 @@ import { Flex, Text } from '@radix-ui/themes'
 import { Circle, CheckCircle, Trash } from '@phosphor-icons/react'
 import { completeTask, reopenTask, deleteTask } from '../../api/taskApi'
 import { useAuth } from '../../hook/useAuth'
+import { useMutate } from '../../hook/useMutate'
 
 export function TaskCard({
   id,
   taskName,
   pomodoroGoal,
-  completedAt,
-  onMutate
+  completedAt
 }) {
   const { token, logout } = useAuth()
+  const { mutate } = useMutate()
 
   const completed = completedAt !== null
   const onCompleteButtonClick = async () => {
@@ -22,11 +23,11 @@ export function TaskCard({
     } else {
       await completeTask(id, pomodoroSpent, token, logout)
     }
-    await onMutate()
+    mutate()
   }
   const onDeleteButtonClick = async () => {
     await deleteTask(id, token, logout)
-    await onMutate()
+    mutate()
   }
   return (
     <Flex

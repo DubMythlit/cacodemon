@@ -4,6 +4,7 @@ import { PomodoroGoalPicker } from './PomodoroGoalPicker'
 import { TaskList } from './TaskList'
 import { createTask } from '../../api/taskApi'
 import { useAuth } from '../../hook/useAuth'
+import { useMutate } from '../../hook/useMutate'
 
 export function TodoList() {
   const { isAuthenticated } = useAuth()
@@ -20,12 +21,12 @@ function TodoListInner() {
   const [taskName, setTaskName] = useState('')
   const [pomodomoGoal, setPomorodoGoal] = useState(0)
 
-  const [mutateTimestamp, setmutateTimestamp] = useState(0)
+  const { mutate } = useMutate()
   const onCreateTask = async () => {
     await createTask(taskName, pomodomoGoal)
     setTaskName('')
     setPomorodoGoal(0)
-    setmutateTimestamp(Date.now())
+    mutate()
   }
 
   return (
@@ -60,9 +61,7 @@ function TodoListInner() {
         />
       </Flex>
 
-      <TaskList
-        mutateTimestamp={mutateTimestamp}
-      />
+      <TaskList />
     </Flex>
   )
 }

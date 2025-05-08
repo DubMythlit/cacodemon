@@ -1,26 +1,24 @@
 import React, { useEffect, useState } from 'react'
 import { useAuth } from '../../hook/useAuth'
+import { useMutate } from '../../hook/useMutate'
 import { getAllTasks, getAllFinishedTasks } from '../../api/taskApi'
 import { TaskCard } from './TaskCard'
 import { Flex, Text } from '@radix-ui/themes'
 
-export function TaskList({ mutateTimestamp }) {
+export function TaskList() {
   const { token, logout } = useAuth()
+  const { mutateTimestamp } = useMutate()
   const [todoTasks, setTodoTasks] = useState([])
   const [finishedTasks, setFinishedTasks] = useState([])
 
-  const fetchData = () => {
-    return Promise.all([
+  useEffect(() => {
+    Promise.all([
       getAllTasks(token, logout),
       getAllFinishedTasks(token, logout)
     ]).then(([todoTasks, finishedTasks]) => {
       setTodoTasks(todoTasks)
       setFinishedTasks(finishedTasks)
     }).catch(console.error)
-  }
-
-  useEffect(() => {
-    fetchData()
   }, [mutateTimestamp])
 
   return (
@@ -39,7 +37,6 @@ export function TaskList({ mutateTimestamp }) {
                 taskName={task.taskName}
                 pomodoroGoal={task.pomodoroGoal}
                 completedAt={task.completedAt}
-                onMutate={() => fetchData()}
               />
             </li>
           )
@@ -55,7 +52,6 @@ export function TaskList({ mutateTimestamp }) {
                 taskName={task.taskName}
                 pomodoroGoal={task.pomodoroGoal}
                 completedAt={task.completedAt}
-                onMutate={() => fetchData()}
               />
             </li>
           )
