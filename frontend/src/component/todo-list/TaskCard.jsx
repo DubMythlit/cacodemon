@@ -11,7 +11,7 @@ export function TaskCard({ task }) {
   const { id, taskName, pomodoroGoal, pomodoroSpent, completedAt } = task
   const { token, logout } = useAuth()
   const { mutate } = useMutate()
-  const { setCurrentTask } = useCurrentTask()
+  const { currentTask, setCurrentTask } = useCurrentTask()
 
   const completed = completedAt !== null
   const onCompleteButtonClick = async () => {
@@ -22,7 +22,9 @@ export function TaskCard({ task }) {
     } else {
       await completeTask(id, pomodoroSpent, token, logout)
     }
-    setCurrentTask(null)
+    if (currentTask?.id == task.id) {
+      setCurrentTask(null)
+    }
     mutate()
   }
   const onDeleteButtonClick = async () => {
