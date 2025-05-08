@@ -1,6 +1,6 @@
 import React from 'react'
 import { Flex, Text } from '@radix-ui/themes'
-import { Circle, CheckCircle, Trash } from '@phosphor-icons/react'
+import { Circle, CheckCircle, PlayCircle, Trash } from '@phosphor-icons/react'
 import { completeTask, reopenTask, deleteTask } from '../../api/taskApi'
 import { useAuth } from '../../hook/useAuth'
 import { useMutate } from '../../hook/useMutate'
@@ -40,6 +40,7 @@ export function TaskCard({
           onClick={onCompleteButtonClick}
           completed={completedAt !== null}
         />
+        {!completedAt && <PlayButton />}
         <div>
           <Text>
             {taskName}
@@ -75,6 +76,17 @@ function CompleteButton({ onClick, completed }) {
       onClick={onClick}
     >
       <Circle size={32} />
+    </button>
+  )
+}
+
+function PlayButton({ onClick }) {
+  return (
+    <button
+      className='text-slate-200 hover:text-green-400'
+      onClick={onClick}
+    >
+      <PlayCircle size={32} />
     </button>
   )
 }
