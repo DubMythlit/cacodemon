@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { Flex, Text } from '@radix-ui/themes'
 import { getTaskInfo } from '../api/taskApi'
 import { useAuth } from '../hook/useAuth'
+import { useMutate } from '../hook/useMutate'
 
 export function TaskInfo() {
   const { isAuthenticated } = useAuth()
@@ -26,6 +27,7 @@ const emptyInfo = {
 function TaskInfoInner() {
   const [info, setInfo] = useState(emptyInfo)
   const { token, logout } = useAuth()
+  const { mutateTimestamp } = useMutate()
 
   useEffect(() => {
     getTaskInfo(token, logout).then((data) => {
@@ -35,7 +37,7 @@ function TaskInfoInner() {
         setInfo(emptyInfo)
       }
     })
-  }, [])
+  }, [mutateTimestamp])
 
   return (
     <Flex
