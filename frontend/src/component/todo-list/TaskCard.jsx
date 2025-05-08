@@ -5,9 +5,10 @@ import { completeTask, reopenTask, deleteTask } from '../../api/taskApi'
 import { useAuth } from '../../hook/useAuth'
 import { useMutate } from '../../hook/useMutate'
 import { useCurrentTask } from '../../hook/useCurrentTask'
+import { PomodoroGauge } from '../PomodoroGauge'
 
 export function TaskCard({ task }) {
-  const { id, taskName, pomodoroGoal, completedAt } = task
+  const { id, taskName, pomodoroGoal, pomodoroSpent, completedAt } = task
   const { token, logout } = useAuth()
   const { mutate } = useMutate()
   const { setCurrentTask } = useCurrentTask()
@@ -48,7 +49,10 @@ export function TaskCard({ task }) {
           <Text>
             {taskName}
           </Text>
-          <Pomodoros pomodoroGoal={pomodoroGoal} />
+          <PomodoroGauge
+            pomodoroGoal={pomodoroGoal}
+            pomodoroSpent={pomodoroSpent}
+          />
         </div>
       </Flex>
       <button
@@ -91,13 +95,5 @@ function PlayButton({ onClick }) {
     >
       <PlayCircle size={32} />
     </button>
-  )
-}
-
-function Pomodoros({ pomodoroGoal }) {
-  const podomoros = new Array(pomodoroGoal)
-  podomoros.fill('🍅')
-  return (
-    <div>{podomoros.join('')}</div>
   )
 }
