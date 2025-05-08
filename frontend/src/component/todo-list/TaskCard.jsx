@@ -6,12 +6,8 @@ import { useAuth } from '../../hook/useAuth'
 import { useMutate } from '../../hook/useMutate'
 import { useCurrentTask } from '../../hook/useCurrentTask'
 
-export function TaskCard({
-  id,
-  taskName,
-  pomodoroGoal,
-  completedAt
-}) {
+export function TaskCard({ task }) {
+  const { id, taskName, pomodoroGoal, completedAt } = task
   const { token, logout } = useAuth()
   const { mutate } = useMutate()
   const { setCurrentTask } = useCurrentTask()
@@ -44,7 +40,7 @@ export function TaskCard({
         />
         {!completedAt && (
           <PlayButton
-            onClick={() => setCurrentTask(taskName)}
+            onClick={() => setCurrentTask(task)}
           />
         )}
         <div>

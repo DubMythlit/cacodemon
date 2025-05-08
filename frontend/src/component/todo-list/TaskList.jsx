@@ -33,10 +33,7 @@ export function TaskList() {
           return (
             <li key={task.id}>
               <TaskCard
-                id={task.id}
-                taskName={task.taskName}
-                pomodoroGoal={task.pomodoroGoal}
-                completedAt={task.completedAt}
+                task={task}
               />
             </li>
           )
@@ -48,10 +45,7 @@ export function TaskList() {
           return (
             <li key={task.id}>
               <TaskCard
-                id={task.id}
-                taskName={task.taskName}
-                pomodoroGoal={task.pomodoroGoal}
-                completedAt={task.completedAt}
+                task={task}
               />
             </li>
           )
