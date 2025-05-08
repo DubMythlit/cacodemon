@@ -24,6 +24,7 @@ public class SecurityConfig {
                     .requestMatchers("/api/auth/login").permitAll()
                     .requestMatchers("/api/user/create").permitAll()
                     .requestMatchers("/api/user/me").authenticated()
+                    .requestMatchers("/api/task/**").authenticated()
                     .anyRequest().denyAll()
                 )
                 .csrf(AbstractHttpConfigurer::disable)
