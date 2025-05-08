@@ -21,6 +21,7 @@ export function TaskCard({ task }) {
     } else {
       await completeTask(id, pomodoroSpent, token, logout)
     }
+    setCurrentTask(null)
     mutate()
   }
   const onDeleteButtonClick = async () => {
