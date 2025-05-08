@@ -1,10 +1,15 @@
 package idv.mythlit.cacodemon.service;
 
+import idv.mythlit.cacodemon.controller.task.TaskInfoResponse;
 import idv.mythlit.cacodemon.model.Task;
 import idv.mythlit.cacodemon.repository.TaskRepository;
 import org.springframework.data.domain.Example;
 import org.springframework.stereotype.Service;
 
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.temporal.ChronoUnit;
 import java.util.Date;
 import java.util.List;
 import java.util.Optional;
@@ -99,5 +104,50 @@ public class TaskService {
         task.setUserId(userId);
         Example<Task> example = Example.of(task);
         return !taskRepository.exists(example);
+    }
+
+    public TaskInfoResponse getTaskInfo(String userId) {
+        LocalDate now = LocalDate.now();
+        LocalDateTime startOfToday = now.atStartOfDay();
+        LocalDateTime sevenDaysAgo = now.minusDays(7).atStartOfDay();
+
+        TaskInfoResponse info = new TaskInfoResponse();
+        List<Task> todayCompleted = taskRepository.findByUserIdAndCompletedAtIsNotNullAndCompletedAtAfter(
+                userId,
+                Date.from(startOfToday.atZone(ZoneId.systemDefault()).toInstant())
+        );
+        int pomodoroSpentToday = 0;
+        int taskCompletedToday = 0;
+        for (Task task : todayCompleted) {
+            pomodoroSpentToday += task.getPomodoroSpent();
+            taskCompletedToday += 1;
+        }
+        info.setPomodoroSpentToday(pomodoroSpentToday);
+        info.setTaskCompletedToday(taskCompletedToday);
+
+        List<Task> completed7days = taskRepository.findByUserIdAndCompletedAtIsNotNullAndCompletedAtAfter(
+                userId,
+                Date.from(sevenDaysAgo.atZone(ZoneId.systemDefault()).toInstant())
+        );
+        int pomodoroSpent7days = 0;
+        int taskCompleted7days = 0;
+        for (Task task : completed7days) {
+            pomodoroSpent7days += task.getPomodoroSpent();
+            taskCompleted7days += 1;
+        }
+        info.setPomodoroSpent7days(pomodoroSpent7days);
+        info.setTaskCompleted7days(taskCompleted7days);
+
+        List<Task> allCompleted = taskRepository.findByUserIdAndCompletedAtIsNotNull(userId);
+        int pomodoroSpentTotal = 0;
+        int taskCompletedTotal = 0;
+        for (Task task : allCompleted) {
+            pomodoroSpentTotal += task.getPomodoroSpent();
+            taskCompletedTotal += 1;
+        }
+        info.setPomodoroSpentTotal(pomodoroSpentTotal);
+        info.setTaskCompletedTotal(taskCompletedTotal);
+
+        return info;
     }
 }

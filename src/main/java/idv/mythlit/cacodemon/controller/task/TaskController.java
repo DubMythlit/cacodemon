@@ -69,6 +69,23 @@ public class TaskController {
         }
     }
 
+    @GetMapping("/info")
+    public ResponseEntity<?> getTaskInfo(Authentication auth) {
+        String username = auth.getName();
+        Optional<AppUser> userOptional = appUserService.getAppUserByName(username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        String userId = userOptional.get().getId();
+        try {
+            TaskInfoResponse taskInfo = taskService.getTaskInfo(userId);
+            return ResponseEntity.ok(taskInfo);
+        } catch (Exception e) {
+            return ResponseEntity.internalServerError().build();
+        }
+    }
+
     @GetMapping("/finished")
     public ResponseEntity<?> getFinishedTasks(Authentication auth) {
         String username = auth.getName();
