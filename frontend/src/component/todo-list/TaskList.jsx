@@ -25,8 +25,7 @@ export function TaskList({ mutateTimestamp }) {
 
   return (
     <Flex
-      className='bg-gray-200 rounded-lg p-4'
-      flexGrow='1'
+      className='bg-gray-200 rounded-lg p-4 max-h-[75vh] overflow-y-scroll'
       direction='column'
       gap='2'
     >
