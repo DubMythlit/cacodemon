@@ -59,7 +59,9 @@ export function Pomodoro() {
 
   return (
     <Flex align='center' justify='center' flexGrow='1'>
-      <Flex direction='column'>
+      <div
+        className='flex flex-col h-full justify-evenly'
+      >
         <CurrentTask />
         <div>
           <Timer
@@ -81,7 +83,7 @@ export function Pomodoro() {
           </Flex>
         </div>
         <TaskInfo />
-      </Flex>
+      </div>
     </Flex>
   )
 }
