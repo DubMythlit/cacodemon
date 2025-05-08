@@ -3,6 +3,17 @@ import { Flex, Text } from '@radix-ui/themes'
 import { getTaskInfo } from '../api/taskApi'
 import { useAuth } from '../hook/useAuth'
 
+export function TaskInfo() {
+  const { isAuthenticated } = useAuth()
+  if (!isAuthenticated) {
+    return null
+  }
+
+  return (
+    <TaskInfoInner />
+  )
+} 
+
 const emptyInfo = {
   pomodoroSpentTotal: 0,
   pomodoroSpent7days: 0,
@@ -12,7 +23,7 @@ const emptyInfo = {
   taskCompletedToday: 0
 }
 
-export function TaskInfo() {
+function TaskInfoInner() {
   const [info, setInfo] = useState(emptyInfo)
   const { token, logout } = useAuth()
 
