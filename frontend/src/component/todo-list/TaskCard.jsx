@@ -4,6 +4,7 @@ import { Circle, CheckCircle, PlayCircle, Trash } from '@phosphor-icons/react'
 import { completeTask, reopenTask, deleteTask } from '../../api/taskApi'
 import { useAuth } from '../../hook/useAuth'
 import { useMutate } from '../../hook/useMutate'
+import { useCurrentTask } from '../../hook/useCurrentTask'
 
 export function TaskCard({
   id,
@@ -13,6 +14,7 @@ export function TaskCard({
 }) {
   const { token, logout } = useAuth()
   const { mutate } = useMutate()
+  const { setCurrentTask } = useCurrentTask()
 
   const completed = completedAt !== null
   const onCompleteButtonClick = async () => {
@@ -40,7 +42,11 @@ export function TaskCard({
           onClick={onCompleteButtonClick}
           completed={completedAt !== null}
         />
-        {!completedAt && <PlayButton />}
+        {!completedAt && (
+          <PlayButton
+            onClick={() => setCurrentTask(taskName)}
+          />
+        )}
         <div>
           <Text>
             {taskName}

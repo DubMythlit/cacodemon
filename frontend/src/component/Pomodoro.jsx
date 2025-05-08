@@ -3,6 +3,7 @@ import { Button, Flex } from '@radix-ui/themes'
 import { StopButtonWithDialog } from './StopButtonWithDialog'
 import { Timer } from './Timer'
 import { TaskInfo } from './TaskInfo'
+import { CurrentTask } from './CurrentTask'
 import { flashTitle } from '../util/util'
 
 export function Pomodoro() {
@@ -59,6 +60,7 @@ export function Pomodoro() {
   return (
     <Flex align='center' justify='center' flexGrow='1'>
       <Flex direction='column'>
+        <CurrentTask />
         <div>
           <Timer
             timerState={timerState}

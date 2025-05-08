@@ -3,6 +3,7 @@ import { Theme, Heading, Flex } from '@radix-ui/themes'
 import { MemberSection } from './component/MemberSection'
 import { AuthProvider } from './context/AuthContext'
 import { MutateProvider } from './context/MutateContext'
+import { CurrentTaskProvider } from './context/CurrentTaskContext'
 import { Pomodoro } from './component/Pomodoro'
 import { TodoList } from './component/todo-list/TodoList'
 
@@ -13,25 +14,27 @@ function App() {
   return (
     <AuthProvider>
       <MutateProvider>
-        <Theme>
-          <Flex
-            direction='column'
-            height='100vh'
-          >
+        <CurrentTaskProvider>
+          <Theme>
             <Flex
-              justify='between'
-              p='2'
+              direction='column'
+              height='100vh'
             >
-              <Heading>Project Cacodemon</Heading>
-              <MemberSection />
-            </Flex>
+              <Flex
+                justify='between'
+                p='2'
+              >
+                <Heading>Project Cacodemon</Heading>
+                <MemberSection />
+              </Flex>
 
-            <Flex flexGrow='1'>
-              <Pomodoro />
-              <TodoList />
+              <Flex flexGrow='1'>
+                <Pomodoro />
+                <TodoList />
+              </Flex>
             </Flex>
-          </Flex>
-        </Theme>
+          </Theme>
+        </CurrentTaskProvider>
       </MutateProvider>
     </AuthProvider>
   )
