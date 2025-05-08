@@ -115,3 +115,23 @@ export async function deleteTask(id, token, logout) {
 
   return true
 }
+
+
+export async function getTaskInfo(token, logout) {
+  const res = await axios.get('/api/task/info', {
+    headers: {
+      Authorization: `Bearer ${token}`
+    }
+  })
+
+  if (res.status === 403) {
+    logout()
+    return
+  }
+  if (res.status !== 200) {
+    console.error(res.statusText)
+    return
+  }
+
+  return res.data
+}

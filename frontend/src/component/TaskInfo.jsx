@@ -1,15 +1,30 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { Flex, Text } from '@radix-ui/themes'
+import { getTaskInfo } from '../api/taskApi'
+import { useAuth } from '../hook/useAuth'
+
+const emptyInfo = {
+  pomodoroSpentTotal: 0,
+  pomodoroSpent7days: 0,
+  pomodoroSpentToday: 0,
+  taskCompletedTotal: 0,
+  taskCompleted7days: 0,
+  taskCompletedToday: 0
+}
 
 export function TaskInfo() {
-  const info = {
-    pomodoroSpentTotal: 12,
-    pomodoroSpent7days: 6,
-    pomodoroSpentToday: 1,
-    taskCompletedTotal: 5,
-    taskCompleted7days: 3,
-    taskCompletedToday: 1
-  }
+  const [info, setInfo] = useState(emptyInfo)
+  const { token, logout } = useAuth()
+
+  useEffect(() => {
+    getTaskInfo(token, logout).then((data) => {
+      if (data) {
+        setInfo(data)
+      } else {
+        setInfo(emptyInfo)
+      }
+    })
+  }, [])
 
   return (
     <Flex
