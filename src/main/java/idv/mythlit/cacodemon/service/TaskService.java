@@ -79,6 +79,26 @@ public class TaskService {
         }
     }
 
+    public boolean updateTaskSpent(String userId, String taskId, Integer pomodoroSpent) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+        if (taskOptional.isEmpty()) {
+            return false;
+        }
+
+        Task task = taskOptional.get();
+        if (!task.getUserId().equals(userId)) {
+            return false;
+        }
+
+        task.setPomodoroSpent(pomodoroSpent);
+        try {
+            taskRepository.save(task);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
     public List<Task> getTasksUnfinished(String userId) {
         return taskRepository.findByUserIdAndCompletedAtIsNull(userId);
     }

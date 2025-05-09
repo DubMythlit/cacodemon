@@ -132,6 +132,24 @@ public class TaskController {
         }
     }
 
+    @PatchMapping("/{id}/spent/{value:\\d+}")
+    public ResponseEntity<?> patchTaskSpent(@PathVariable String id, @PathVariable int value, Authentication auth) {
+        String username = auth.getName();
+        Optional<AppUser> userOptional = appUserService.getAppUserByName(username);
+        if (userOptional.isEmpty()) {
+            return ResponseEntity.internalServerError().build();
+        }
+
+        String userId = userOptional.get().getId();
+        if (taskService.checkUserTaskNotExists(id, userId)) {
+            return ResponseEntity.notFound().build();
+        }
+        if (!taskService.updateTaskSpent(userId, id, value)) {
+            return ResponseEntity.internalServerError().build();
+        }
+        return ResponseEntity.ok().build();
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<?> delete(@PathVariable String id, Authentication auth) {
         String username = auth.getName();
