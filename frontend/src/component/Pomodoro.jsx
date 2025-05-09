@@ -5,6 +5,7 @@ import { Timer } from './Timer'
 import { TaskInfo } from './TaskInfo'
 import { CurrentTask } from './CurrentTask'
 import { flashTitle } from '../util/util'
+import { useCurrentTask } from '../hook/useCurrentTask'
 
 export function Pomodoro() {
   const [mode, setMode] = useState('task')
@@ -44,6 +45,7 @@ export function Pomodoro() {
   useEffect(() => {
     alarmRef.current = new Audio('/sound/alarm.mp3')
   },[])
+  const { currentTask, setCurrentTask } = useCurrentTask()
 
   const onTimeUp = () => {
     if (mode === 'task') {
@@ -51,6 +53,14 @@ export function Pomodoro() {
       flashTitle('⏰該休息一下囉')
       setMode('rest')
       setTimerState('stop')
+
+      if (currentTask) {
+        const pomodoroSpent = currentTask.pomodoroSpent + 1
+        setCurrentTask({
+          ...currentTask,
+          pomodoroSpent
+        })
+      }
     } else {
       setMode('task')
       setTimerState('stop')
