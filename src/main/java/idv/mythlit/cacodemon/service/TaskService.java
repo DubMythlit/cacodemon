@@ -130,40 +130,43 @@ public class TaskService {
         LocalDateTime startOfToday = now.atStartOfDay();
         LocalDateTime sevenDaysAgo = now.minusDays(7).atStartOfDay();
 
-        TaskInfoResponse info = new TaskInfoResponse();
-        List<Task> todayCompleted = taskRepository.findByUserIdAndCompletedAtIsNotNullAndCompletedAtAfter(
-                userId,
-                Date.from(startOfToday.atZone(ZoneId.systemDefault()).toInstant())
-        );
+        Date today = Date.from(startOfToday.atZone(ZoneId.systemDefault()).toInstant());
+        Date sevenDaysAgoDate = Date.from(sevenDaysAgo.atZone(ZoneId.systemDefault()).toInstant());
+
+        List<Task> allCompletedTasks = taskRepository.findByUserIdAndCompletedAtIsNotNull(userId);
+
         int pomodoroSpentToday = 0;
         int taskCompletedToday = 0;
-        for (Task task : todayCompleted) {
-            pomodoroSpentToday += task.getPomodoroSpent();
-            taskCompletedToday += 1;
-        }
-        info.setPomodoroSpentToday(pomodoroSpentToday);
-        info.setTaskCompletedToday(taskCompletedToday);
 
-        List<Task> completed7days = taskRepository.findByUserIdAndCompletedAtIsNotNullAndCompletedAtAfter(
-                userId,
-                Date.from(sevenDaysAgo.atZone(ZoneId.systemDefault()).toInstant())
-        );
         int pomodoroSpent7days = 0;
         int taskCompleted7days = 0;
-        for (Task task : completed7days) {
-            pomodoroSpent7days += task.getPomodoroSpent();
-            taskCompleted7days += 1;
-        }
-        info.setPomodoroSpent7days(pomodoroSpent7days);
-        info.setTaskCompleted7days(taskCompleted7days);
 
-        List<Task> allCompleted = taskRepository.findByUserIdAndCompletedAtIsNotNull(userId);
         int pomodoroSpentTotal = 0;
         int taskCompletedTotal = 0;
-        for (Task task : allCompleted) {
-            pomodoroSpentTotal += task.getPomodoroSpent();
+
+        for (Task task : allCompletedTasks) {
+            Date completedAt = task.getCompletedAt();
+            int pomodoro = task.getPomodoroSpent();
+
+            pomodoroSpentTotal += pomodoro;
             taskCompletedTotal += 1;
+
+            if (completedAt != null && completedAt.after(sevenDaysAgoDate)) {
+                pomodoroSpent7days += pomodoro;
+                taskCompleted7days += 1;
+            }
+
+            if (completedAt != null && completedAt.after(today)) {
+                pomodoroSpentToday += pomodoro;
+                taskCompletedToday += 1;
+            }
         }
+
+        TaskInfoResponse info = new TaskInfoResponse();
+        info.setPomodoroSpentToday(pomodoroSpentToday);
+        info.setTaskCompletedToday(taskCompletedToday);
+        info.setPomodoroSpent7days(pomodoroSpent7days);
+        info.setTaskCompleted7days(taskCompleted7days);
         info.setPomodoroSpentTotal(pomodoroSpentTotal);
         info.setTaskCompletedTotal(taskCompletedTotal);
 
