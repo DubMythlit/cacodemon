@@ -24,7 +24,7 @@ function App() {
                 justify='between'
                 p='2'
               >
-                <Heading>Project Cacodemon</Heading>
+                <Heading>Pomodoro App</Heading>
                 <MemberSection />
               </Flex>
 
