@@ -2,9 +2,14 @@ import React from 'react'
 import { Button, Flex, Text } from '@radix-ui/themes'
 import { useCurrentTask } from '../hook/useCurrentTask'
 import { PomodoroGauge } from './PomodoroGauge'
+import { useAuth } from '../hook/useAuth'
 
 export function CurrentTask() {
   const { currentTask, setCurrentTask } = useCurrentTask()
+  const { isAuthenticated } = useAuth()
+  if (!isAuthenticated) {
+    return null
+  }
 
   return (
     <Flex

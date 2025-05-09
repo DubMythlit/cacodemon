@@ -39,7 +39,7 @@ public class TaskService {
         }
     }
 
-    public boolean completeTask(String userId, String taskId, Integer pomodoroSpent) {
+    public boolean completeTask(String userId, String taskId) {
         Optional<Task> taskOptional = taskRepository.findById(taskId);
         if (taskOptional.isEmpty()) {
             return false;
@@ -50,7 +50,6 @@ public class TaskService {
             return false;
         }
 
-        task.setPomodoroSpent(pomodoroSpent);
         task.setCompletedAt(new Date());
         try {
             taskRepository.save(task);
@@ -72,6 +71,26 @@ public class TaskService {
         }
 
         task.setCompletedAt(null);
+        try {
+            taskRepository.save(task);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    public boolean updateTaskSpent(String userId, String taskId, Integer pomodoroSpent) {
+        Optional<Task> taskOptional = taskRepository.findById(taskId);
+        if (taskOptional.isEmpty()) {
+            return false;
+        }
+
+        Task task = taskOptional.get();
+        if (!task.getUserId().equals(userId)) {
+            return false;
+        }
+
+        task.setPomodoroSpent(pomodoroSpent);
         try {
             taskRepository.save(task);
             return true;
