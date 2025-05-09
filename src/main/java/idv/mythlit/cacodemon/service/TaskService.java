@@ -39,7 +39,7 @@ public class TaskService {
         }
     }
 
-    public boolean completeTask(String userId, String taskId, Integer pomodoroSpent) {
+    public boolean completeTask(String userId, String taskId) {
         Optional<Task> taskOptional = taskRepository.findById(taskId);
         if (taskOptional.isEmpty()) {
             return false;
@@ -50,7 +50,6 @@ public class TaskService {
             return false;
         }
 
-        task.setPomodoroSpent(pomodoroSpent);
         task.setCompletedAt(new Date());
         try {
             taskRepository.save(task);

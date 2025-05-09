@@ -113,11 +113,6 @@ public class TaskController {
         }
 
         Date completedAt = body.getCompletedAt();
-        Integer pomodoroSpent = body.getPomodoroSpent();
-        if (completedAt != null && pomodoroSpent == null) {
-            return ResponseEntity.badRequest().build();
-        }
-
         String userId = userOptional.get().getId();
         if (taskService.checkUserTaskNotExists(id, userId)) {
             return ResponseEntity.notFound().build();
@@ -125,7 +120,7 @@ public class TaskController {
 
         boolean isPatchSuccess = false;
         if (completedAt != null) {
-            isPatchSuccess = taskService.completeTask(userId, id, pomodoroSpent);
+            isPatchSuccess = taskService.completeTask(userId, id);
         } else {
             isPatchSuccess = taskService.reopenTask(userId, id);
         }

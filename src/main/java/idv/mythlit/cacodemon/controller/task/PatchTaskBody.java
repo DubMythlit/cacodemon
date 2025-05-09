@@ -6,6 +6,5 @@ import java.util.Date;
 
 @Data
 public class PatchTaskBody {
-    private Integer pomodoroSpent;
     private Date completedAt;
 }
